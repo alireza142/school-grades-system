@@ -58,7 +58,7 @@
                 <button type="submit" class="btn btn-primary w-100">ورود به سیستم</button>
             </form>
             <div class="mt-3 text-center">
-                <small class="text-muted">برای تست: username: admin, password: 1234</small>
+                <small class="text-muted"></small>
             </div>
         </div>
     </div>

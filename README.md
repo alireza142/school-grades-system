@@ -110,49 +110,6 @@
             text-align: center;
         }
         
-        .report-card-official {
-            background: white;
-            border: 3px solid var(--moe-blue);
-            border-radius: 8px;
-            padding: 0;
-            margin: 15px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            font-family: 'B Nazanin', sans-serif;
-        }
-        
-        .report-header {
-            background: linear-gradient(135deg, var(--moe-blue), #2d4fa1);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 4px solid var(--moe-red);
-        }
-        
-        .student-info-section {
-            padding: 25px;
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-        }
-        
-        .grades-table-section {
-            padding: 20px;
-        }
-        
-        .grade-excellent { background-color: #d4edda !important; }
-        .grade-good { background-color: #fff3cd !important; }
-        .grade-weak { background-color: #f8d7da !important; }
-        
-        .official-stamp {
-            border: 3px double var(--moe-red);
-            padding: 20px;
-            text-align: center;
-            font-weight: bold;
-            color: var(--moe-blue);
-            margin: 25px;
-            font-family: 'B Titr', 'Times New Roman', serif;
-            background: #f8f9fa;
-        }
-        
         .teacher-panel {
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             border: 2px solid var(--moe-green);
@@ -183,36 +140,13 @@
             padding: 15px;
             margin-bottom: 15px;
         }
-        
-        /* چاپ کارنامه */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .report-card-official, .report-card-official * {
-                visibility: visible;
-            }
-            .report-card-official {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                box-shadow: none;
-                border: none;
-            }
-            .no-print {
-                display: none !important;
-            }
-        }
 
-        .student-report-item {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .student-report-item:hover {
-            background-color: #f8f9fa;
-            transform: translateX(-5px);
+        .pdf-section {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid var(--moe-blue);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -224,7 +158,7 @@
                 <div class="school-title">مدرسه نمونه دولتی امام حسین (ع)</div>
                 <div class="moe-stamp">سامانه یکپارچه مدیریت آموزشی</div>
                 <div style="margin-top: 15px; font-size: 0.9rem;">
-                    <i class="bi bi-geo-alt-fill"></i> استان البرز - شهرستان کرج
+                    <i class="bi bi-geo-alt-fill"></i> استان خراسان رضوی - شهرستان مشهد
                 </div>
             </div>
             <div class="p-4">
@@ -367,6 +301,77 @@
             </div>
         </div>
 
+        <!-- بخش خروجی PDF -->
+        <div class="pdf-section">
+            <h5 class="text-center mb-4" style="color: var(--moe-blue); font-family: 'B Nazanin';">
+                <i class="bi bi-file-earmark-pdf"></i> سیستم تولید کارنامه PDF
+            </h5>
+            
+            <div class="row g-3">
+                <!-- خروجی برای دانش‌آموز خاص -->
+                <div class="col-md-6">
+                    <div class="card card-moe">
+                        <div class="card-header card-header-moe">
+                            <h6 class="mb-0"><i class="bi bi-person"></i> کارنامه فردی</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">انتخاب دانش‌آموز</label>
+                                <select class="form-select" id="singleStudentSelect" style="font-family: 'B Nazanin';">
+                                    <option value="">انتخاب دانش‌آموز</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-moe w-100" onclick="generateSinglePDF()">
+                                <i class="bi bi-download"></i> تولید کارنامه فردی (PDF)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- خروجی برای کل کلاس -->
+                <div class="col-md-6">
+                    <div class="card card-moe">
+                        <div class="card-header card-header-moe">
+                            <h6 class="mb-0"><i class="bi bi-people"></i> کارنامه گروهی</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">انتخاب کلاس</label>
+                                <select class="form-select" id="classSelect" style="font-family: 'B Nazanin';">
+                                    <option value="">انتخاب کلاس</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-success w-100" onclick="generateClassPDF()">
+                                <i class="bi bi-download"></i> تولید کارنامه کل کلاس (PDF)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- خروجی برای همه دانش‌آموزان -->
+                <div class="col-12">
+                    <div class="card card-moe">
+                        <div class="card-header card-header-moe">
+                            <h6 class="mb-0"><i class="bi bi-collection"></i> کارنامه کامل</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p class="mb-0">تولید کارنامه PDF برای تمامی دانش‌آموزان مدرسه</p>
+                                    <small class="text-muted">تعداد دانش‌آموزان: <span id="totalStudentsCount">0</span> نفر</small>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <button class="btn btn-warning w-100" onclick="generateAllPDF()">
+                                        <i class="bi bi-download"></i> تولید همه کارنامه‌ها (PDF)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <!-- پنل معلم -->
             <div class="col-md-4">
@@ -380,7 +385,7 @@
                 </div>
 
                 <!-- مدیریت کلاس‌ها (فقط برای مدیر) -->
-                <div id="classManagementPanel" class="card card-moe">
+                <div id="classManagementPanel" class="card card-moe" style="display: none;">
                     <div class="card-header card-header-moe">
                         <h6 class="mb-0"><i class="bi bi-house-door"></i> مدیریت کلاس‌ها</h6>
                     </div>
@@ -419,7 +424,7 @@
             <!-- بخش دانش‌آموزان و نمرات -->
             <div class="col-md-8">
                 <!-- ثبت دانش‌آموز (فقط برای مدیر) -->
-                <div id="studentManagementPanel" class="card card-moe mb-3">
+                <div id="studentManagementPanel" class="card card-moe mb-3" style="display: none;">
                     <div class="card-header card-header-moe">
                         <h6 class="mb-0"><i class="bi bi-people-fill"></i> ثبت نام دانش‌آموزان</h6>
                     </div>
@@ -537,35 +542,15 @@
                 </div>
             </div>
         </div>
-
-        <!-- بخش کارنامه‌ها -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card card-moe">
-                    <div class="card-header card-header-moe d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0"><i class="bi bi-file-earmark-text"></i> کارنامه‌های تحصیلی</h6>
-                        <div>
-                            <button class="btn btn-sm btn-light" onclick="generateAllReportCards()">
-                                <i class="bi bi-printer"></i> چاپ همه کارنامه‌ها
-                            </button>
-                            <button class="btn btn-sm btn-danger ms-2" onclick="clearAllReportCards()">
-                                <i class="bi bi-trash"></i> پاک کردن همه
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="reportCards">
-                            <!-- کارنامه‌ها اینجا نمایش داده می‌شوند -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
+    <!-- بارگذاری کتابخانه‌ها در انتهای صفحه -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    
     <script>
-        // داده‌های معلمین با تخصص‌های مختلف
+        // داده‌های اولیه
         let teachers = [
             { 
                 username: '140201', 
@@ -610,19 +595,16 @@
         ];
 
         let currentTeacher = null;
-
-        // بارگذاری داده‌ها از localStorage
         let classes = JSON.parse(localStorage.getItem('imamHusseinClasses')) || [];
         let students = JSON.parse(localStorage.getItem('imamHusseinStudents')) || [];
         let grades = JSON.parse(localStorage.getItem('imamHusseinGrades')) || [];
         let savedTeachers = JSON.parse(localStorage.getItem('imamHusseinTeachers'));
 
-        // اگر داده‌های معلمین در localStorage وجود دارد، از آن استفاده کن
         if (savedTeachers) {
             teachers = savedTeachers;
         }
 
-        // ذخیره داده‌ها
+        // توابع اصلی
         function saveAllData() {
             localStorage.setItem('imamHusseinClasses', JSON.stringify(classes));
             localStorage.setItem('imamHusseinStudents', JSON.stringify(students));
@@ -630,7 +612,7 @@
             localStorage.setItem('imamHusseinTeachers', JSON.stringify(teachers));
         }
 
-        // لاگین
+        // سیستم لاگین
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -647,13 +629,14 @@
                 document.getElementById('teacherSpecialty').textContent = teacher.specialty;
                 document.getElementById('gradeSubject').value = teacher.specialty;
                 
-                // نمایش پنل مدیریت فقط برای مدیر
+                // تنظیم دسترسی‌ها - فقط مدیر به پنل مدیریت دسترسی دارد
                 if (teacher.type === 'admin') {
                     document.getElementById('adminPanel').style.display = 'block';
                     document.getElementById('classManagementPanel').style.display = 'block';
                     document.getElementById('studentManagementPanel').style.display = 'block';
                     loadTeacherList();
                 } else {
+                    document.getElementById('adminPanel').style.display = 'none';
                     document.getElementById('classManagementPanel').style.display = 'none';
                     document.getElementById('studentManagementPanel').style.display = 'none';
                 }
@@ -668,19 +651,23 @@
         // ثبت معلم جدید
         document.getElementById('teacherForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('ثبت معلم جدید فراخوانی شد');
             
             const username = document.getElementById('teacherUsername').value;
             const password = document.getElementById('teacherPassword').value;
             const name = document.getElementById('teacherNameInput').value;
             const specialty = document.getElementById('teacherSpecialtyInput').value;
             
-            // بررسی تکراری نبودن کد پرسنلی
+            if (!username || !password || !name || !specialty) {
+                alert('لطفاً تمام فیلدها را پر کنید!');
+                return;
+            }
+            
             if (teachers.find(t => t.username === username)) {
                 alert('این کد پرسنلی قبلاً ثبت شده است!');
                 return;
             }
             
-            // جمع‌آوری پایه‌های مجاز
             const selectedGrades = [];
             if (document.getElementById('grade10').checked) selectedGrades.push('10');
             if (document.getElementById('grade11').checked) selectedGrades.push('11');
@@ -692,7 +679,6 @@
                 return;
             }
             
-            // ایجاد معلم جدید
             const newTeacher = {
                 username: username,
                 password: password,
@@ -705,15 +691,129 @@
             };
             
             teachers.push(newTeacher);
-            
-            // پاک کردن فرم
             document.getElementById('teacherForm').reset();
-            
             saveAllData();
             loadTeacherList();
             
             alert(`معلم ${name} با موفقیت ثبت شد!\nکد پرسنلی: ${username}\nرمز عبور: ${password}`);
         });
+
+        // ایجاد کلاس جدید
+        document.getElementById('classForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('ایجاد کلاس جدید فراخوانی شد');
+            
+            const gradeLevel = document.getElementById('gradeLevel').value;
+            const field = document.getElementById('field').value;
+            const className = document.getElementById('className').value;
+            
+            if (!gradeLevel || !field || !className) {
+                alert('لطفاً تمام فیلدها را پر کنید!');
+                return;
+            }
+            
+            const classId = Date.now().toString();
+            const fieldName = getFieldName(field);
+            const gradeName = getGradeName(gradeLevel);
+            
+            classes.push({
+                id: classId,
+                grade: gradeLevel,
+                gradeName: gradeName,
+                field: field,
+                fieldName: fieldName,
+                name: className,
+                fullName: `پایه ${gradeName} - ${fieldName} - کلاس ${className}`,
+                createdBy: currentTeacher.username
+            });
+            
+            document.getElementById('classForm').reset();
+            saveAllData();
+            loadClasses();
+            loadStudentClassSelect();
+            loadGradeClassSelect();
+            loadPDFSelects();
+            
+            alert(`کلاس ${className} با موفقیت ایجاد شد!`);
+        });
+
+        // ثبت دانش‌آموز جدید
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('ثبت دانش‌آموز جدید فراخوانی شد');
+            
+            const firstName = document.getElementById('studentFirstName').value;
+            const lastName = document.getElementById('studentLastName').value;
+            const nationalCode = document.getElementById('studentNationalCode').value;
+            const studentId = document.getElementById('studentId').value;
+            const birthDate = document.getElementById('studentBirthDate').value;
+            const classId = document.getElementById('studentClass').value;
+            
+            if (!firstName || !lastName || !nationalCode || !studentId || !birthDate || !classId) {
+                alert('لطفاً تمام فیلدها را پر کنید!');
+                return;
+            }
+            
+            const selectedClass = classes.find(c => c.id === classId);
+            if (!selectedClass) {
+                alert('کلاس انتخاب شده معتبر نیست!');
+                return;
+            }
+            
+            students.push({
+                id: Date.now().toString(),
+                firstName: firstName,
+                lastName: lastName,
+                nationalCode: nationalCode,
+                studentId: studentId,
+                birthDate: birthDate,
+                classId: classId,
+                className: selectedClass.fullName,
+                grade: selectedClass.grade,
+                field: selectedClass.field,
+                createdBy: currentTeacher.username
+            });
+            
+            document.getElementById('studentForm').reset();
+            saveAllData();
+            loadStudents();
+            loadPDFSelects();
+            
+            alert(`دانش‌آموز ${firstName} ${lastName} با موفقیت ثبت شد!`);
+        });
+
+        // بارگذاری داشبورد
+        function loadDashboard() {
+            loadClasses();
+            loadStudents();
+            loadStudentClassSelect();
+            loadGradeClassSelect();
+            loadPDFSelects();
+        }
+
+        // بارگذاری انتخاب‌های PDF
+        function loadPDFSelects() {
+            const singleSelect = document.getElementById('singleStudentSelect');
+            const classSelect = document.getElementById('classSelect');
+            
+            singleSelect.innerHTML = '<option value="">انتخاب دانش‌آموز</option>';
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.firstName} ${student.lastName} - ${student.className}`;
+                singleSelect.appendChild(option);
+            });
+            
+            classSelect.innerHTML = '<option value="">انتخاب کلاس</option>';
+            classes.forEach(classItem => {
+                const option = document.createElement('option');
+                option.value = classItem.id;
+                option.textContent = classItem.fullName;
+                classSelect.appendChild(option);
+            });
+            
+            document.getElementById('totalStudentsCount').textContent = students.length;
+        }
 
         // بارگذاری لیست معلمین
         function loadTeacherList() {
@@ -735,8 +835,6 @@
                         <strong>${teacher.name}</strong>
                         <br>
                         <small>کد: ${teacher.personalCode} | تخصص: ${teacher.specialty}</small>
-                        <br>
-                        <small>پایه‌ها: ${teacher.grades.map(g => getGradeName(g)).join('، ')}</small>
                     </div>
                     <button class="btn btn-sm btn-danger" onclick="deleteTeacher('${teacher.username}')">
                         <i class="bi bi-trash"></i>
@@ -746,119 +844,79 @@
             });
         }
 
-        // حذف معلم
-        function deleteTeacher(username) {
-            if (confirm('آیا از حذف این معلم مطمئن هستید؟')) {
-                teachers = teachers.filter(t => t.username !== username);
-                saveAllData();
-                loadTeacherList();
+        // بارگذاری کلاس‌ها
+        function loadClasses() {
+            const classList = document.getElementById('classList');
+            classList.innerHTML = '';
+            
+            if (classes.length === 0) {
+                classList.innerHTML = '<div class="alert alert-info text-center">هنوز کلاسی ایجاد نشده است</div>';
+                return;
             }
+            
+            classes.forEach(classItem => {
+                const classElement = document.createElement('div');
+                classElement.className = 'alert alert-secondary mb-2';
+                classElement.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${classItem.fullName}</strong>
+                            <br>
+                            <small>تعداد دانش‌آموزان: ${students.filter(s => s.classId === classItem.id).length} نفر</small>
+                        </div>
+                        <button class="btn btn-sm btn-danger" onclick="deleteClass('${classItem.id}')">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+                classList.appendChild(classElement);
+            });
         }
 
-        // نمایش اطلاعات معلم
-        function loadTeacherInfo() {
-            const teacherInfo = document.getElementById('teacherInfo');
-            teacherInfo.innerHTML = `
-                <div class="text-center">
-                    <div class="fw-bold" style="color: var(--moe-blue);">${currentTeacher.name}</div>
-                    <div class="text-muted">کد پرسنلی: ${currentTeacher.personalCode}</div>
-                    <div class="mt-2">
-                        <span class="subject-badge">${currentTeacher.specialty}</span>
-                    </div>
-                    <div class="mt-2">
-                        <small class="text-muted">پایه‌های مجاز:</small><br>
-                        ${currentTeacher.grades.map(grade => 
-                            `<span class="badge bg-secondary me-1">${getGradeName(grade)}</span>`
-                        ).join('')}
-                    </div>
-                </div>
-            `;
+        // بارگذاری دانش‌آموزان
+        function loadStudents() {
+            const studentList = document.getElementById('studentList');
+            studentList.innerHTML = '';
+            
+            if (students.length === 0) {
+                studentList.innerHTML = '<tr><td colspan="6" class="text-center py-4">هنوز دانش‌آموزی ثبت نشده است</td></tr>';
+                return;
+            }
+            
+            students.forEach((student, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${student.studentId}</td>
+                    <td>${student.firstName} ${student.lastName}</td>
+                    <td>${student.nationalCode}</td>
+                    <td>${student.className}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteStudent('${student.id}')">
+                            <i class="bi bi-trash"></i> حذف
+                        </button>
+                    </td>
+                `;
+                studentList.appendChild(row);
+            });
         }
 
-        // ایجاد کلاس جدید (فقط مدیر)
-        document.getElementById('classForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const gradeLevel = document.getElementById('gradeLevel').value;
-            const field = document.getElementById('field').value;
-            const className = document.getElementById('className').value;
-            
-            const classId = Date.now().toString();
-            const fieldName = getFieldName(field);
-            const gradeName = getGradeName(gradeLevel);
-            
-            // ایجاد کلاس اصلی (بدون teacherId خاص)
-            classes.push({
-                id: classId,
-                grade: gradeLevel,
-                gradeName: gradeName,
-                field: field,
-                fieldName: fieldName,
-                name: className,
-                fullName: `پایه ${gradeName} - ${fieldName} - کلاس ${className}`,
-                createdBy: currentTeacher.username
+        // بارگذاری انتخاب کلاس برای ثبت دانش‌آموز
+        function loadStudentClassSelect() {
+            const select = document.getElementById('studentClass');
+            select.innerHTML = '<option value="">انتخاب کلاس</option>';
+            classes.forEach(classItem => {
+                const option = document.createElement('option');
+                option.value = classItem.id;
+                option.textContent = classItem.fullName;
+                select.appendChild(option);
             });
-            
-            // پاک کردن فرم
-            document.getElementById('gradeLevel').value = '';
-            document.getElementById('field').value = '';
-            document.getElementById('className').value = '';
-            
-            saveAllData();
-            loadClasses();
-            loadStudentClassSelect();
-            loadGradeClassSelect();
-            
-            alert(`کلاس ${className} با موفقیت ایجاد شد و برای همه معلم‌ها قابل دسترس است`);
-        });
-
-        // ثبت دانش‌آموز جدید (فقط مدیر)
-        document.getElementById('studentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const firstName = document.getElementById('studentFirstName').value;
-            const lastName = document.getElementById('studentLastName').value;
-            const nationalCode = document.getElementById('studentNationalCode').value;
-            const studentId = document.getElementById('studentId').value;
-            const birthDate = document.getElementById('studentBirthDate').value;
-            const classId = document.getElementById('studentClass').value;
-            
-            const selectedClass = classes.find(c => c.id === classId);
-            
-            students.push({
-                id: Date.now().toString(),
-                firstName: firstName,
-                lastName: lastName,
-                nationalCode: nationalCode,
-                studentId: studentId,
-                birthDate: birthDate,
-                classId: classId,
-                className: selectedClass.fullName,
-                grade: selectedClass.grade,
-                field: selectedClass.field,
-                createdBy: currentTeacher.username
-            });
-            
-            // پاک کردن فرم
-            document.getElementById('studentFirstName').value = '';
-            document.getElementById('studentLastName').value = '';
-            document.getElementById('studentNationalCode').value = '';
-            document.getElementById('studentId').value = '';
-            document.getElementById('studentBirthDate').value = '';
-            
-            saveAllData();
-            loadStudents();
-            loadGradeClassSelect();
-            
-            alert(`دانش‌آموز ${firstName} ${lastName} با موفقیت ثبت شد`);
-        });
+        }
 
         // بارگذاری انتخاب کلاس برای نمره‌دهی
         function loadGradeClassSelect() {
             const select = document.getElementById('gradeClass');
             select.innerHTML = '<option value="">انتخاب کلاس</option>';
-            
-            // همه کلاس‌ها برای همه معلم‌ها قابل دسترس است
             classes.forEach(classItem => {
                 const option = document.createElement('option');
                 option.value = classItem.id;
@@ -974,341 +1032,556 @@
             loadClassStudentsForGrades();
         }
 
-        // بارگذاری داشبورد
-        function loadDashboard() {
-            loadClasses();
-            loadStudents();
-            loadStudentClassSelect();
-            loadGradeClassSelect();
-        }
-
-        // بارگذاری کلاس‌ها
-        function loadClasses() {
-            const classList = document.getElementById('classList');
-            classList.innerHTML = '';
-            
-            if (classes.length === 0) {
-                classList.innerHTML = '<div class="alert alert-info text-center">هنوز کلاسی ایجاد نشده است</div>';
-                return;
-            }
-            
-            classes.forEach(classItem => {
-                const classElement = document.createElement('div');
-                classElement.className = 'alert alert-secondary mb-2';
-                classElement.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>${classItem.fullName}</strong>
-                            <br>
-                            <small>تعداد دانش‌آموزان: ${students.filter(s => s.classId === classItem.id).length} نفر</small>
-                        </div>
-                        <button class="btn btn-sm btn-danger" onclick="deleteClass('${classItem.id}')">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
-                `;
-                classList.appendChild(classElement);
-            });
-        }
-
-        // بارگذاری دانش‌آموزان
-        function loadStudents() {
-            const studentList = document.getElementById('studentList');
-            studentList.innerHTML = '';
-            
-            if (students.length === 0) {
-                studentList.innerHTML = '<tr><td colspan="6" class="text-center py-4">هنوز دانش‌آموزی ثبت نشده است</td></tr>';
-                return;
-            }
-            
-            students.forEach((student, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${student.studentId}</td>
-                    <td>${student.firstName} ${student.lastName}</td>
-                    <td>${student.nationalCode}</td>
-                    <td>${student.className}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info" onclick="viewStudentReport('${student.id}')">
-                            <i class="bi bi-eye"></i> مشاهده کارنامه
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteStudent('${student.id}')">
-                            <i class="bi bi-trash"></i> حذف
-                        </button>
-                    </td>
-                `;
-                studentList.appendChild(row);
-            });
-        }
-
-        // بارگذاری انتخاب کلاس برای ثبت دانش‌آموز
-        function loadStudentClassSelect() {
-            const select = document.getElementById('studentClass');
-            select.innerHTML = '<option value="">انتخاب کلاس</option>';
-            
-            classes.forEach(classItem => {
-                const option = document.createElement('option');
-                option.value = classItem.id;
-                option.textContent = classItem.fullName;
-                select.appendChild(option);
-            });
-        }
-
-        // مشاهده کارنامه دانش‌آموز
-        function viewStudentReport(studentId) {
-            const student = students.find(s => s.id === studentId);
-            if (!student) {
-                alert('دانش‌آموز پیدا نشد!');
-                return;
-            }
-            
-            const studentGrades = grades.filter(g => g.studentId === studentId);
-            const reportCards = document.getElementById('reportCards');
-            
-            // گروه‌بندی نمرات بر اساس درس و ترم
-            const subjectGrades = {};
-            
-            studentGrades.forEach(grade => {
-                if (!subjectGrades[grade.subject]) {
-                    subjectGrades[grade.subject] = {};
+        // تولید PDF برای یک دانش‌آموز
+        function generateSinglePDF() {
+            try {
+                const studentId = document.getElementById('singleStudentSelect').value;
+                if (!studentId) {
+                    alert('لطفاً یک دانش‌آموز انتخاب کنید!');
+                    return;
                 }
-                subjectGrades[grade.subject][grade.term] = grade.grade;
-            });
-            
-            let reportHTML = `
-                <div class="report-card-official" id="report-${student.id}">
-                    <div class="report-header">
-                        <h4>کارنامه تحصیلی</h4>
-                        <h5>مدرسه نمونه دولتی امام حسین (ع)</h5>
-                        <div class="mt-3">
-                            <span class="badge bg-warning">پایه ${getGradeName(student.grade)} - ${getFieldName(student.field)}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="student-info-section">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <strong>نام و نام خانوادگی:</strong> ${student.firstName} ${student.lastName}
-                            </div>
-                            <div class="col-md-6">
-                                <strong>شماره دانش‌آموزی:</strong> ${student.studentId}
-                            </div>
-                            <div class="col-md-6">
-                                <strong>کد ملی:</strong> ${student.nationalCode}
-                            </div>
-                            <div class="col-md-6">
-                                <strong>تاریخ تولد:</strong> ${new Date(student.birthDate).toLocaleDateString('fa-IR')}
-                            </div>
-                            <div class="col-md-6">
-                                <strong>کلاس:</strong> ${student.className}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="grades-table-section">
-                        <h6 class="text-center mb-3">نمرات تحصیلی</h6>
-                        <div class="table-responsive">
-                            <table class="official-table">
-                                <thead>
-                                    <tr>
-                                        <th>ردیف</th>
-                                        <th>نام درس</th>
-                                        <th>نوبت اول</th>
-                                        <th>نوبت دوم</th>
-                                        <th>معدل</th>
-                                        <th>وضعیت</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-            `;
-            
-            let rowNumber = 1;
-            let totalSum = 0;
-            let subjectCount = 0;
-            
-            // لیست همه دروس ممکن
-            const allSubjects = ['ریاضی', 'فیزیک', 'شیمی', 'ادبیات', 'زبان انگلیسی', 'عربی', 'دین و زندگی', 'تاریخ', 'جغرافیا'];
-            
-            allSubjects.forEach(subject => {
-                if (subjectGrades[subject]) {
-                    const grade1 = subjectGrades[subject]['1'] || '-';
-                    const grade2 = subjectGrades[subject]['2'] || '-';
+                
+                const student = students.find(s => s.id === studentId);
+                if (!student) {
+                    alert('دانش‌آموز پیدا نشد!');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // اضافه کردن فونت فارسی (استفاده از فونت استاندارد)
+                doc.setFont('helvetica');
+                
+                // هدر کارنامه - طراحی رسمی
+                doc.setFillColor(30, 58, 138);
+                doc.rect(0, 0, 210, 40, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(18);
+                doc.text('کارنامه تحصیلی', 105, 15, { align: 'center' });
+                doc.setFontSize(12);
+                doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, 25, { align: 'center' });
+                doc.setFontSize(10);
+                doc.text('سال تحصیلی ۱۴۰۳-۱۴۰۴', 105, 32, { align: 'center' });
+                
+                // اطلاعات دانش‌آموز - جدول بندی شده
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(11);
+                
+                // ایجاد جدول اطلاعات دانش‌آموز
+                const studentInfo = [
+                    ['نام و نام خانوادگی:', student.firstName + ' ' + student.lastName],
+                    ['شماره دانش‌آموزی:', student.studentId],
+                    ['کد ملی:', student.nationalCode],
+                    ['کلاس:', student.className],
+                    ['تاریخ تولد:', new Date(student.birthDate).toLocaleDateString('fa-IR')]
+                ];
+                
+                let y = 50;
+                studentInfo.forEach(([label, value]) => {
+                    doc.setFillColor(240, 240, 240);
+                    doc.rect(20, y, 170, 8, 'F');
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(label, 25, y + 5);
+                    doc.text(value, 120, y + 5);
+                    y += 10;
+                });
+                
+                y += 10;
+                
+                // جدول نمرات - طراحی رسمی
+                const studentGrades = grades.filter(g => g.studentId === studentId);
+                const subjectGrades = {};
+                
+                studentGrades.forEach(grade => {
+                    if (!subjectGrades[grade.subject]) {
+                        subjectGrades[grade.subject] = {};
+                    }
+                    subjectGrades[grade.subject][grade.term] = grade.grade;
+                });
+                
+                // دروس مختلف
+                const subjects = [
+                    'ریاضی', 'فیزیک', 'شیمی', 'ادبیات فارسی', 
+                    'زبان انگلیسی', 'عربی', 'دین و زندگی', 
+                    'تاریخ', 'جغرافیا', 'هنر', 'تربیت بدنی'
+                ];
+                
+                // ایجاد جدول نمرات
+                const tableData = [];
+                let totalSum = 0;
+                let subjectCount = 0;
+                
+                subjects.forEach(subject => {
+                    const grade1 = subjectGrades[subject]?.['1'] || '-';
+                    const grade2 = subjectGrades[subject]?.['2'] || '-';
                     
                     let average = '-';
                     let status = '-';
-                    let rowClass = '';
                     
                     if (grade1 !== '-' && grade2 !== '-') {
                         average = ((grade1 + grade2) / 2).toFixed(2);
                         totalSum += parseFloat(average);
                         subjectCount++;
                         
-                        if (average >= 17) {
-                            status = 'عالی';
-                            rowClass = 'grade-excellent';
-                        } else if (average >= 12) {
-                            status = 'قبول';
-                            rowClass = 'grade-good';
-                        } else {
-                            status = 'مردود';
-                            rowClass = 'grade-weak';
-                        }
-                    } else if (grade1 !== '-') {
-                        average = grade1;
-                        status = 'ناقص';
-                    } else if (grade2 !== '-') {
-                        average = grade2;
-                        status = 'ناقص';
+                        if (average >= 17) status = 'عالی';
+                        else if (average >= 15) status = 'خیلی خوب';
+                        else if (average >= 12) status = 'خوب';
+                        else if (average >= 10) status = 'قابل قبول';
+                        else status = 'نیاز به تلاش';
                     }
                     
-                    reportHTML += `
-                        <tr class="${rowClass}">
-                            <td>${rowNumber}</td>
-                            <td>${subject}</td>
-                            <td>${grade1}</td>
-                            <td>${grade2}</td>
-                            <td>${average}</td>
-                            <td>${status}</td>
-                        </tr>
-                    `;
-                    rowNumber++;
-                }
-            });
-            
-            const overallAverage = subjectCount > 0 ? (totalSum / subjectCount).toFixed(2) : '-';
-            
-            reportHTML += `
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="row mt-4">
-                            <div class="col-md-6">
-                                <div class="alert alert-info">
-                                    <strong>معدل کل:</strong> ${overallAverage}
-                                </div>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <button class="btn btn-moe" onclick="printReportCard('${student.id}')">
-                                    <i class="bi bi-printer"></i> چاپ کارنامه
-                                </button>
-                                <button class="btn btn-danger ms-2" onclick="removeReportCard('${student.id}')">
-                                    <i class="bi bi-x-circle"></i> حذف
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="official-stamp">
-                            <div>مهر و امضای مدیر مدرسه</div>
-                            <div>مدرسه نمونه دولتی امام حسین (ع)</div>
-                            <div>${new Date().toLocaleDateString('fa-IR')}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // اضافه کردن کارنامه جدید به ابتدای لیست
-            reportCards.innerHTML = reportHTML + reportCards.innerHTML;
-            
-            alert(`کارنامه ${student.firstName} ${student.lastName} نمایش داده شد`);
-        }
-
-        // حذف یک کارنامه
-        function removeReportCard(studentId) {
-            const reportCard = document.getElementById(`report-${studentId}`);
-            if (reportCard) {
-                reportCard.remove();
-            }
-        }
-
-        // پاک کردن همه کارنامه‌ها
-        function clearAllReportCards() {
-            if (confirm('آیا از پاک کردن همه کارنامه‌های نمایش داده شده مطمئن هستید؟')) {
-                document.getElementById('reportCards').innerHTML = '';
-            }
-        }
-
-        // چاپ کارنامه
-        function printReportCard(studentId) {
-            const reportCard = document.getElementById(`report-${studentId}`);
-            if (!reportCard) {
-                alert('کارنامه پیدا نشد!');
-                return;
-            }
-            
-            const originalDisplay = reportCard.style.display;
-            const originalReportsDisplay = document.getElementById('reportCards').style.display;
-            
-            // مخفی کردن بقیه عناصر
-            document.querySelectorAll('.report-card-official').forEach(card => {
-                if (card.id !== `report-${studentId}`) {
-                    card.style.display = 'none';
-                }
-            });
-            
-            reportCard.style.display = 'block';
-            window.print();
-            
-            // بازگرداندن نمایش به حالت اولیه
-            document.querySelectorAll('.report-card-official').forEach(card => {
-                card.style.display = 'block';
-            });
-        }
-
-        // تولید همه کارنامه‌ها
-        function generateAllReportCards() {
-            const reportCards = document.getElementById('reportCards');
-            
-            if (students.length === 0) {
-                alert('هیچ دانش‌آموزی برای نمایش کارنامه وجود ندارد');
-                return;
-            }
-            
-            // پاک کردن کارنامه‌های قبلی
-            reportCards.innerHTML = '';
-            
-            students.forEach(student => {
-                viewStudentReport(student.id);
-            });
-            
-            alert(`کارنامه‌های ${students.length} دانش‌آموز تولید شد`);
-        }
-
-        // حذف دانش‌آموز
-        function deleteStudent(studentId) {
-            if (confirm('آیا از حذف این دانش‌آموز مطمئن هستید؟')) {
-                students = students.filter(s => s.id !== studentId);
-                // حذف نمرات مربوط به این دانش‌آموز
-                grades = grades.filter(g => g.studentId !== studentId);
-                saveAllData();
-                loadStudents();
-                loadGradeClassSelect();
-            }
-        }
-
-        // حذف کلاس
-        function deleteClass(classId) {
-            if (confirm('آیا از حذف این کلاس مطمئن هستید؟ تمام دانش‌آموزان و نمرات مربوطه نیز حذف خواهند شد.')) {
-                // حذف کلاس
-                classes = classes.filter(c => c.id !== classId);
-                // حذف دانش‌آموزان این کلاس
-                const studentsToDelete = students.filter(s => s.classId === classId);
-                students = students.filter(s => s.classId !== classId);
-                // حذف نمرات دانش‌آموزان حذف شده
-                studentsToDelete.forEach(student => {
-                    grades = grades.filter(g => g.studentId !== student.id);
+                    tableData.push([
+                        subject,
+                        grade1.toString(),
+                        grade2.toString(),
+                        average,
+                        status
+                    ]);
                 });
                 
-                saveAllData();
-                loadClasses();
-                loadStudents();
-                loadStudentClassSelect();
-                loadGradeClassSelect();
+                // سرستون جدول
+                doc.setFillColor(30, 58, 138);
+                doc.rect(10, y, 190, 10, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.text('ردیف', 25, y + 6);
+                doc.text('نام درس', 60, y + 6);
+                doc.text('نوبت اول', 120, y + 6);
+                doc.text('نوبت دوم', 150, y + 6);
+                doc.text('معدل', 170, y + 6);
+                doc.text('وضعیت', 190, y + 6);
+                
+                y += 10;
+                
+                // محتوای جدول
+                doc.setTextColor(0, 0, 0);
+                tableData.forEach((row, index) => {
+                    if (y > 250) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    
+                    // رنگ‌آمیزی سطرها
+                    if (index % 2 === 0) {
+                        doc.setFillColor(245, 245, 245);
+                    } else {
+                        doc.setFillColor(255, 255, 255);
+                    }
+                    doc.rect(10, y, 190, 8, 'F');
+                    
+                    doc.text((index + 1).toString(), 25, y + 5);
+                    doc.text(row[0], 60, y + 5);
+                    doc.text(row[1], 120, y + 5);
+                    doc.text(row[2], 150, y + 5);
+                    doc.text(row[3], 170, y + 5);
+                    doc.text(row[4], 190, y + 5);
+                    
+                    y += 8;
+                });
+                
+                y += 10;
+                
+                // محاسبه معدل کل
+                const overallAverage = subjectCount > 0 ? (totalSum / subjectCount).toFixed(2) : '0.00';
+                
+                // نمایش معدل کل
+                doc.setFillColor(220, 237, 200);
+                doc.rect(120, y, 80, 12, 'F');
+                doc.setTextColor(0, 100, 0);
+                doc.setFontSize(12);
+                doc.text(`معدل کل: ${overallAverage}`, 160, y + 8, { align: 'center' });
+                
+                y += 20;
+                
+                // مهر و امضای رسمی
+                doc.setDrawColor(220, 38, 38);
+                doc.setLineWidth(1);
+                doc.rect(50, y, 110, 40);
+                
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(10);
+                doc.text('مهر و امضای مدیر مدرسه', 105, y + 10, { align: 'center' });
+                doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, y + 20, { align: 'center' });
+                doc.text('تاریخ: ' + new Date().toLocaleDateString('fa-IR'), 105, y + 30, { align: 'center' });
+                
+                // ذخیره فایل با نام فارسی
+                doc.save(`کارنامه_${student.firstName}_${student.lastName}.pdf`);
+                alert('کارنامه با موفقیت تولید شد!');
+                
+            } catch (error) {
+                console.error('خطا در تولید PDF:', error);
+                alert('خطا در تولید PDF! لطفاً دوباره تلاش کنید.');
             }
         }
 
-        // خروج از سیستم
+        // تولید PDF برای کل کلاس
+        function generateClassPDF() {
+            try {
+                const classId = document.getElementById('classSelect').value;
+                if (!classId) {
+                    alert('لطفاً یک کلاس انتخاب کنید!');
+                    return;
+                }
+                
+                const classStudents = students.filter(s => s.classId === classId);
+                if (classStudents.length === 0) {
+                    alert('این کلاس دانش‌آموزی ندارد!');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const className = classes.find(c => c.id === classId).fullName;
+                
+                classStudents.forEach((student, index) => {
+                    if (index > 0) {
+                        doc.addPage();
+                    }
+                    
+                    const doc = new jsPDF();
+                    
+                    // طراحی مشابه کارنامه فردی اما برای هر دانش‌آموز
+                    doc.setFont('helvetica');
+                    
+                    // هدر
+                    doc.setFillColor(30, 58, 138);
+                    doc.rect(0, 0, 210, 40, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(18);
+                    doc.text('کارنامه تحصیلی', 105, 15, { align: 'center' });
+                    doc.setFontSize(12);
+                    doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, 25, { align: 'center' });
+                    doc.setFontSize(10);
+                    doc.text('سال تحصیلی ۱۴۰۳-۱۴۰۴', 105, 32, { align: 'center' });
+                    
+                    // اطلاعات دانش‌آموز
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(11);
+                    
+                    const studentInfo = [
+                        ['نام و نام خانوادگی:', student.firstName + ' ' + student.lastName],
+                        ['شماره دانش‌آموزی:', student.studentId],
+                        ['کلاس:', student.className]
+                    ];
+                    
+                    let y = 50;
+                    studentInfo.forEach(([label, value]) => {
+                        doc.setFillColor(240, 240, 240);
+                        doc.rect(20, y, 170, 8, 'F');
+                        doc.setTextColor(0, 0, 0);
+                        doc.text(label, 25, y + 5);
+                        doc.text(value, 120, y + 5);
+                        y += 10;
+                    });
+                    
+                    y += 10;
+                    
+                    // جدول نمرات
+                    const studentGrades = grades.filter(g => g.studentId === student.id);
+                    const subjectGrades = {};
+                    
+                    studentGrades.forEach(grade => {
+                        if (!subjectGrades[grade.subject]) {
+                            subjectGrades[grade.subject] = {};
+                        }
+                        subjectGrades[grade.subject][grade.term] = grade.grade;
+                    });
+                    
+                    const subjects = [
+                        'ریاضی', 'فیزیک', 'شیمی', 'ادبیات فارسی', 
+                        'زبان انگلیسی', 'عربی', 'دین و زندگی', 
+                        'تاریخ', 'جغرافیا', 'هنر', 'تربیت بدنی'
+                    ];
+                    
+                    const tableData = [];
+                    let totalSum = 0;
+                    let subjectCount = 0;
+                    
+                    subjects.forEach(subject => {
+                        const grade1 = subjectGrades[subject]?.['1'] || '-';
+                        const grade2 = subjectGrades[subject]?.['2'] || '-';
+                        
+                        let average = '-';
+                        let status = '-';
+                        
+                        if (grade1 !== '-' && grade2 !== '-') {
+                            average = ((grade1 + grade2) / 2).toFixed(2);
+                            totalSum += parseFloat(average);
+                            subjectCount++;
+                            
+                            if (average >= 17) status = 'عالی';
+                            else if (average >= 15) status = 'خیلی خوب';
+                            else if (average >= 12) status = 'خوب';
+                            else if (average >= 10) status = 'قابل قبول';
+                            else status = 'نیاز به تلاش';
+                        }
+                        
+                        tableData.push([
+                            subject,
+                            grade1.toString(),
+                            grade2.toString(),
+                            average,
+                            status
+                        ]);
+                    });
+                    
+                    // سرستون جدول
+                    doc.setFillColor(30, 58, 138);
+                    doc.rect(10, y, 190, 10, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.text('ردیف', 25, y + 6);
+                    doc.text('نام درس', 60, y + 6);
+                    doc.text('نوبت اول', 120, y + 6);
+                    doc.text('نوبت دوم', 150, y + 6);
+                    doc.text('معدل', 170, y + 6);
+                    doc.text('وضعیت', 190, y + 6);
+                    
+                    y += 10;
+                    
+                    // محتوای جدول
+                    doc.setTextColor(0, 0, 0);
+                    tableData.forEach((row, index) => {
+                        if (y > 250) {
+                            doc.addPage();
+                            y = 20;
+                        }
+                        
+                        if (index % 2 === 0) {
+                            doc.setFillColor(245, 245, 245);
+                        } else {
+                            doc.setFillColor(255, 255, 255);
+                        }
+                        doc.rect(10, y, 190, 8, 'F');
+                        
+                        doc.text((index + 1).toString(), 25, y + 5);
+                        doc.text(row[0], 60, y + 5);
+                        doc.text(row[1], 120, y + 5);
+                        doc.text(row[2], 150, y + 5);
+                        doc.text(row[3], 170, y + 5);
+                        doc.text(row[4], 190, y + 5);
+                        
+                        y += 8;
+                    });
+                    
+                    y += 10;
+                    
+                    // معدل کل
+                    const overallAverage = subjectCount > 0 ? (totalSum / subjectCount).toFixed(2) : '0.00';
+                    
+                    doc.setFillColor(220, 237, 200);
+                    doc.rect(120, y, 80, 12, 'F');
+                    doc.setTextColor(0, 100, 0);
+                    doc.setFontSize(12);
+                    doc.text(`معدل کل: ${overallAverage}`, 160, y + 8, { align: 'center' });
+                    
+                    y += 20;
+                    
+                    // مهر و امضا
+                    doc.setDrawColor(220, 38, 38);
+                    doc.setLineWidth(1);
+                    doc.rect(50, y, 110, 40);
+                    
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(10);
+                    doc.text('مهر و امضای مدیر مدرسه', 105, y + 10, { align: 'center' });
+                    doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, y + 20, { align: 'center' });
+                    doc.text('تاریخ: ' + new Date().toLocaleDateString('fa-IR'), 105, y + 30, { align: 'center' });
+                    
+                    if (index === 0) {
+                        var finalDoc = doc;
+                    }
+                });
+                
+                finalDoc.save(`کارنامه_${className}.pdf`);
+                alert(`کارنامه کلاس ${className} با موفقیت تولید شد!`);
+                
+            } catch (error) {
+                console.error('خطا در تولید PDF:', error);
+                alert('خطا در تولید PDF! لطفاً دوباره تلاش کنید.');
+            }
+        }
+
+        // تولید PDF برای همه دانش‌آموزان
+        function generateAllPDF() {
+            try {
+                if (students.length === 0) {
+                    alert('هیچ دانش‌آموزی برای تولید کارنامه وجود ندارد!');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                students.forEach((student, index) => {
+                    if (index > 0) {
+                        doc.addPage();
+                    }
+                    
+                    // محتوای مشابه کارنامه فردی برای هر دانش‌آموز
+                    doc.setFont('helvetica');
+                    
+                    doc.setFillColor(30, 58, 138);
+                    doc.rect(0, 0, 210, 40, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(18);
+                    doc.text('کارنامه تحصیلی', 105, 15, { align: 'center' });
+                    doc.setFontSize(12);
+                    doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, 25, { align: 'center' });
+                    doc.setFontSize(10);
+                    doc.text('سال تحصیلی ۱۴۰۳-۱۴۰۴', 105, 32, { align: 'center' });
+                    
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(11);
+                    
+                    const studentInfo = [
+                        ['نام و نام خانوادگی:', student.firstName + ' ' + student.lastName],
+                        ['شماره دانش‌آموزی:', student.studentId],
+                        ['کلاس:', student.className]
+                    ];
+                    
+                    let y = 50;
+                    studentInfo.forEach(([label, value]) => {
+                        doc.setFillColor(240, 240, 240);
+                        doc.rect(20, y, 170, 8, 'F');
+                        doc.setTextColor(0, 0, 0);
+                        doc.text(label, 25, y + 5);
+                        doc.text(value, 120, y + 5);
+                        y += 10;
+                    });
+                    
+                    y += 10;
+                    
+                    const studentGrades = grades.filter(g => g.studentId === student.id);
+                    const subjectGrades = {};
+                    
+                    studentGrades.forEach(grade => {
+                        if (!subjectGrades[grade.subject]) {
+                            subjectGrades[grade.subject] = {};
+                        }
+                        subjectGrades[grade.subject][grade.term] = grade.grade;
+                    });
+                    
+                    const subjects = [
+                        'ریاضی', 'فیزیک', 'شیمی', 'ادبیات فارسی', 
+                        'زبان انگلیسی', 'عربی', 'دین و زندگی', 
+                        'تاریخ', 'جغرافیا', 'هنر', 'تربیت بدنی'
+                    ];
+                    
+                    const tableData = [];
+                    let totalSum = 0;
+                    let subjectCount = 0;
+                    
+                    subjects.forEach(subject => {
+                        const grade1 = subjectGrades[subject]?.['1'] || '-';
+                        const grade2 = subjectGrades[subject]?.['2'] || '-';
+                        
+                        let average = '-';
+                        let status = '-';
+                        
+                        if (grade1 !== '-' && grade2 !== '-') {
+                            average = ((grade1 + grade2) / 2).toFixed(2);
+                            totalSum += parseFloat(average);
+                            subjectCount++;
+                            
+                            if (average >= 17) status = 'عالی';
+                            else if (average >= 15) status = 'خیلی خوب';
+                            else if (average >= 12) status = 'خوب';
+                            else if (average >= 10) status = 'قابل قبول';
+                            else status = 'نیاز به تلاش';
+                        }
+                        
+                        tableData.push([
+                            subject,
+                            grade1.toString(),
+                            grade2.toString(),
+                            average,
+                            status
+                        ]);
+                    });
+                    
+                    doc.setFillColor(30, 58, 138);
+                    doc.rect(10, y, 190, 10, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.text('ردیف', 25, y + 6);
+                    doc.text('نام درس', 60, y + 6);
+                    doc.text('نوبت اول', 120, y + 6);
+                    doc.text('نوبت دوم', 150, y + 6);
+                    doc.text('معدل', 170, y + 6);
+                    doc.text('وضعیت', 190, y + 6);
+                    
+                    y += 10;
+                    
+                    doc.setTextColor(0, 0, 0);
+                    tableData.forEach((row, index) => {
+                        if (y > 250) {
+                            doc.addPage();
+                            y = 20;
+                        }
+                        
+                        if (index % 2 === 0) {
+                            doc.setFillColor(245, 245, 245);
+                        } else {
+                            doc.setFillColor(255, 255, 255);
+                        }
+                        doc.rect(10, y, 190, 8, 'F');
+                        
+                        doc.text((index + 1).toString(), 25, y + 5);
+                        doc.text(row[0], 60, y + 5);
+                        doc.text(row[1], 120, y + 5);
+                        doc.text(row[2], 150, y + 5);
+                        doc.text(row[3], 170, y + 5);
+                        doc.text(row[4], 190, y + 5);
+                        
+                        y += 8;
+                    });
+                    
+                    y += 10;
+                    
+                    const overallAverage = subjectCount > 0 ? (totalSum / subjectCount).toFixed(2) : '0.00';
+                    
+                    doc.setFillColor(220, 237, 200);
+                    doc.rect(120, y, 80, 12, 'F');
+                    doc.setTextColor(0, 100, 0);
+                    doc.setFontSize(12);
+                    doc.text(`معدل کل: ${overallAverage}`, 160, y + 8, { align: 'center' });
+                    
+                    y += 20;
+                    
+                    doc.setDrawColor(220, 38, 38);
+                    doc.setLineWidth(1);
+                    doc.rect(50, y, 110, 40);
+                    
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(10);
+                    doc.text('مهر و امضای مدیر مدرسه', 105, y + 10, { align: 'center' });
+                    doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, y + 20, { align: 'center' });
+                    doc.text('تاریخ: ' + new Date().toLocaleDateString('fa-IR'), 105, y + 30, { align: 'center' });
+                });
+                
+                doc.save('کارنامه_همه_دانش_آموزان.pdf');
+                alert(`کارنامه ${students.length} دانش‌آموز با موفقیت تولید شد!`);
+                
+            } catch (error) {
+                console.error('خطا در تولید PDF:', error);
+                alert('خطا در تولید PDF! لطفاً دوباره تلاش کنید.');
+            }
+        }
+
+        // توابع کمکی
+        function loadTeacherInfo() {
+            const teacherInfo = document.getElementById('teacherInfo');
+            if (currentTeacher) {
+                teacherInfo.innerHTML = `
+                    <div class="text-center">
+                        <div class="fw-bold" style="color: var(--moe-blue);">${currentTeacher.name}</div>
+                        <div class="text-muted">کد پرسنلی: ${currentTeacher.personalCode}</div>
+                        <div class="mt-2">
+                            <span class="subject-badge">${currentTeacher.specialty}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
         function logout() {
             if (confirm('آیا می‌خواهید از سیستم خارج شوید؟')) {
                 currentTeacher = null;
@@ -1318,7 +1591,35 @@
             }
         }
 
-        // توابع کمکی
+        function deleteTeacher(username) {
+            if (confirm('آیا از حذف این معلم مطمئن هستید؟')) {
+                teachers = teachers.filter(t => t.username !== username);
+                saveAllData();
+                loadTeacherList();
+            }
+        }
+
+        function deleteClass(classId) {
+            if (confirm('آیا از حذف این کلاس مطمئن هستید؟')) {
+                classes = classes.filter(c => c.id !== classId);
+                students = students.filter(s => s.classId !== classId);
+                saveAllData();
+                loadClasses();
+                loadStudents();
+                loadPDFSelects();
+            }
+        }
+
+        function deleteStudent(studentId) {
+            if (confirm('آیا از حذف این دانش‌آموز مطمئن هستید؟')) {
+                students = students.filter(s => s.id !== studentId);
+                grades = grades.filter(g => g.studentId !== studentId);
+                saveAllData();
+                loadStudents();
+                loadPDFSelects();
+            }
+        }
+
         function getGradeName(grade) {
             const grades = {
                 '10': 'دهم',
@@ -1338,10 +1639,10 @@
             return fields[field] || field;
         }
 
-        // مقداردهی اولیه
+        // بارگذاری اولیه
         window.onload = function() {
-            // بارگذاری اولیه داده‌ها
             loadStudentClassSelect();
+            console.log('سیستم آماده است...');
         };
     </script>
 </body>

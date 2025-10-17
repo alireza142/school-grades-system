@@ -3,193 +3,647 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه مدیریت آموزشی - مدرسه نمونه دولتی امام حسین (ع)</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <title>🔥 برنامه‌ریز درسی هوشمند</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* متغیرها و تنظیمات اولیه */
         :root {
-            --moe-blue: #1e3a8a;
-            --moe-red: #dc2626;
-            --moe-green: #059669;
-            --moe-gold: #d97706;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --dark: #1e272e;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --card-bg: #2d3436;
+            --text-light: #e2e8f0;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            --radius: 12px;
+            --transition: all 0.3s ease;
         }
-        
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2d4fa1 100%);
-            font-family: 'B Nazanin', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: var(--text-light);
             min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 20px;
         }
-        
-        .login-container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            margin: 30px auto;
-            max-width: 500px;
-            border: 3px solid var(--moe-red);
-        }
-        
-        .moe-header {
-            background: linear-gradient(135deg, var(--moe-blue), #2d4fa1);
-            color: white;
-            padding: 25px;
+
+        /* هدر */
+        header {
+            background: rgba(45, 52, 54, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
             text-align: center;
-            border-radius: 10px 10px 0 0;
-            border-bottom: 4px solid var(--moe-red);
-            position: relative;
         }
-        
-        .school-title {
-            font-family: 'B Titr', 'Segoe UI', sans-serif;
-            font-size: 1.4rem;
-            margin-bottom: 5px;
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
         }
-        
-        .moe-stamp {
-            border: 2px solid var(--moe-gold);
-            padding: 8px 15px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.1);
-            font-size: 0.9rem;
+
+        .logo i {
+            font-size: 2.5rem;
+            color: #ffd32a;
         }
-        
-        .btn-moe {
-            background: linear-gradient(135deg, var(--moe-blue), #2d4fa1);
-            border: 2px solid var(--moe-red);
+
+        .logo h1 {
+            font-size: 1.8rem;
             color: white;
+        }
+
+        .date-display {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        /* منو */
+        .main-menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .menu-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
             padding: 12px 25px;
-            font-weight: bold;
-            border-radius: 8px;
-            font-family: 'B Nazanin', sans-serif;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .btn-moe:hover {
-            background: linear-gradient(135deg, #2d4fa1, var(--moe-blue));
+
+        .menu-btn:hover {
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            color: white;
         }
-        
-        .card-moe {
-            border: 2px solid var(--moe-blue);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+        /* محتوای اصلی */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 25px;
+        }
+
+        /* کارت‌ها */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            background: white;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        .card-header-moe {
-            background: linear-gradient(135deg, var(--moe-blue), #2d4fa1);
-            color: white;
-            font-weight: bold;
-            border-bottom: 3px solid var(--moe-red);
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffd32a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* برنامه روزانه */
+        .date-info {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.1);
             padding: 15px;
-            font-family: 'B Nazanin', sans-serif;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
         }
-        
-        .official-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: 'B Nazanin', sans-serif;
-            font-size: 0.95rem;
-        }
-        
-        .official-table th {
-            background: var(--moe-blue);
-            color: white;
-            padding: 12px 8px;
-            text-align: center;
-            border: 1px solid #ddd;
-            font-weight: bold;
-        }
-        
-        .official-table td {
-            padding: 10px 8px;
-            border: 1px solid #ddd;
+
+        .today, .tomorrow {
             text-align: center;
         }
-        
-        .teacher-panel {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border: 2px solid var(--moe-green);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+
+        .today .date {
+            color: #ffd32a;
+            font-weight: bold;
         }
-        
-        .subject-badge {
-            background: var(--moe-green);
+
+        .tasks-container {
+            min-height: 200px;
+        }
+
+        .task-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition);
+        }
+
+        .task-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #ffd32a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .task-checkbox.checked {
+            background: #ffd32a;
+        }
+
+        .task-checkbox.checked::after {
+            content: "✓";
+            color: var(--dark);
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .task-text {
+            flex: 1;
+        }
+
+        .task-text.completed {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        /* تایمر */
+        .timer-container {
+            text-align: center;
+        }
+
+        .timer-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(#ffd32a 0%, #34495e 0%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(255, 211, 42, 0.3);
+        }
+
+        .timer-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffd32a;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .timer-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .timer-btn.start {
+            background: var(--secondary);
             color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin: 2px;
         }
-        
-        .navbar-moe {
-            background: linear-gradient(135deg, var(--moe-blue), #2d4fa1);
-            border-bottom: 4px solid var(--moe-red);
-            padding: 15px 0;
+
+        .timer-btn.stop {
+            background: var(--danger);
+            color: white;
         }
-        
-        .admin-panel {
-            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-            border: 2px solid var(--moe-gold);
+
+        .timer-btn.reset {
+            background: var(--warning);
+            color: white;
+        }
+
+        .timer-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .timer-settings {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .timer-select {
+            padding: 8px 12px;
             border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* برنامه مدرسه */
+        .schedule-display {
+            background: rgba(255, 255, 255, 0.05);
             padding: 15px;
+            border-radius: var(--radius);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .day-schedule {
             margin-bottom: 15px;
         }
 
-        .pdf-section {
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            border: 2px solid var(--moe-blue);
-            border-radius: 8px;
-            padding: 20px;
+        .day-title {
+            color: #ffd32a;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .session-item {
+            padding: 5px 0;
+            margin-left: 15px;
+        }
+
+        /* مودال */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* فرم‌ها */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffd32a;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* لیست‌ها */
+        .list-container {
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 15px;
+        }
+
+        .list-item {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* آمار */
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffd32a;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-menu {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .menu-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .date-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .timer-controls {
+                flex-wrap: wrap;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- صفحه لاگین -->
-    <div id="loginPage">
-        <div class="login-container">
-            <div class="moe-header">
-                <div class="school-title">مدرسه نمونه دولتی امام حسین (ع)</div>
-                <div class="moe-stamp">سامانه یکپارچه مدیریت آموزشی</div>
-                <div style="margin-top: 15px; font-size: 0.9rem;">
-                    <i class="bi bi-geo-alt-fill"></i> استان خراسان رضوی - شهرستان مشهد
+    <div class="container">
+        <!-- هدر -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>🔥 برنامه‌ریز درسی هوشمند</h1>
+            </div>
+            <div class="date-display" id="currentDate">
+                <!-- تاریخ اینجا نمایش داده می‌شود -->
+            </div>
+        </header>
+
+        <!-- منوی اصلی -->
+        <div class="main-menu">
+            <button class="menu-btn" onclick="showModal('subjectsModal')">
+                <i class="fas fa-book"></i> مدیریت دروس
+            </button>
+            <button class="menu-btn" onclick="showModal('scheduleModal')">
+                <i class="fas fa-calendar-alt"></i> برنامه هفتگی
+            </button>
+            <button class="menu-btn" onclick="showModal('examsModal')">
+                <i class="fas fa-file-alt"></i> مدیریت امتحانات
+            </button>
+            <button class="menu-btn" onclick="generateSmartPlan()">
+                <i class="fas fa-magic"></i> تولید برنامه هوشمند
+            </button>
+        </div>
+
+        <!-- محتوای اصلی -->
+        <div class="main-content">
+            <!-- سمت چپ - برنامه روزانه -->
+            <div class="left-column">
+                <!-- برنامه امروز -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-tasks"></i> برنامه امروز
+                        </h2>
+                    </div>
+                    <div class="date-info">
+                        <div class="today">
+                            <div class="date" id="todayDate">امروز</div>
+                            <div class="day" id="todayDay">شنبه</div>
+                        </div>
+                        <div class="tomorrow">
+                            <div class="date" id="tomorrowDate">فردا</div>
+                            <div class="day" id="tomorrowDay">یکشنبه</div>
+                        </div>
+                    </div>
+                    <div class="tasks-container" id="todayTasks">
+                        <!-- برنامه امروز اینجا نمایش داده می‌شود -->
+                    </div>
+                </div>
+
+                <!-- برنامه فردا -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-eye"></i> پیش‌خوانی فردا
+                        </h2>
+                    </div>
+                    <div class="tasks-container" id="tomorrowTasks">
+                        <!-- برنامه فردا اینجا نمایش داده می‌شود -->
+                    </div>
                 </div>
             </div>
-            <div class="p-4">
-                <h5 class="text-center mb-4" style="color: var(--moe-blue); font-family: 'B Nazanin';">
-                    <i class="bi bi-shield-lock"></i> سامانه ورود معلمین
-                </h5>
-                <form id="loginForm">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">کد پرسنلی</label>
-                        <input type="text" class="form-control text-center" id="username" placeholder="شش رقم" required style="font-family: 'B Nazanin';">
+
+            <!-- سمت راست - تایمر و اطلاعات -->
+            <div class="right-column">
+                <!-- تایمر -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-clock"></i> تایمر مطالعه
+                        </h2>
                     </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">رمز عبور</label>
-                        <input type="password" class="form-control text-center" id="password" placeholder="رمز اختصاصی" required style="font-family: 'B Nazanin';">
+                    <div class="timer-container">
+                        <div class="timer-circle" id="timerCircle">
+                            <div class="timer-display" id="timerDisplay">25:00</div>
+                        </div>
+                        <div class="timer-controls">
+                            <button class="timer-btn start" onclick="startTimer()">
+                                <i class="fas fa-play"></i> شروع
+                            </button>
+                            <button class="timer-btn stop" onclick="stopTimer()">
+                                <i class="fas fa-pause"></i> توقف
+                            </button>
+                            <button class="timer-btn reset" onclick="resetTimer()">
+                                <i class="fas fa-redo"></i> ریست
+                            </button>
+                        </div>
+                        <div class="timer-settings">
+                            <select class="timer-select" id="timerMinutes" onchange="setTimer()">
+                                <option value="25">25 دقیقه</option>
+                                <option value="30">30 دقیقه</option>
+                                <option value="45">45 دقیقه</option>
+                                <option value="60">60 دقیقه</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="setTimer()">
+                                <i class="fas fa-cog"></i> تنظیم
+                            </button>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-moe w-100">
-                        <i class="bi bi-box-arrow-in-right"></i> ورود به سامانه
-                    </button>
-                </form>
-                <div class="mt-4 text-center">
-                    <div class="alert alert-info">
-                        <h6>دسترسی‌های آزمایشی:</h6>
-                        <div class="row text-start">
-                            <div class="col-6">
-                                <small>• ریاضی دهم: ۱۴۰۲۰۱/۱۲۳۴</small><br>
-                                <small>• فیزیک یازدهم: ۱۴۰۲۰۲/۱۲۳۴</small>
-                            </div>
-                            <div class="col-6">
-                                <small>• ادبیات دوازدهم: ۱۴۰۲۰۳/۱۲۳۴</small><br>
-                                <small>• مدیریت: ۱۴۰۲۰۰/۱۲۳۴</small>
-                            </div>
+                </div>
+
+                <!-- اطلاعات مدرسه -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-school"></i> برنامه مدرسه
+                        </h2>
+                    </div>
+                    <div class="schedule-display" id="schoolSchedule">
+                        <!-- برنامه مدرسه اینجا نمایش داده می‌شود -->
+                    </div>
+                </div>
+
+                <!-- آمار -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-chart-bar"></i> آمار
+                        </h2>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="subjectsCount">0</div>
+                            <div>درس</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="examsCount">0</div>
+                            <div>امتحان</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="studyTime">0</div>
+                            <div>دقیقه مطالعه</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="completedTasks">0</div>
+                            <div>تکمیل شده</div>
                         </div>
                     </div>
                 </div>
@@ -197,1453 +651,591 @@
         </div>
     </div>
 
-    <!-- داشبورد اصلی -->
-    <div id="dashboard" style="display: none;">
-        <!-- نوار بالایی -->
-        <nav class="navbar navbar-moe rounded mb-4">
-            <div class="container-fluid">
-                <div class="d-flex align-items-center">
-                    <span class="navbar-brand text-white fw-bold" style="font-family: 'B Titr';">
-                        <i class="bi bi-mortarboard-fill"></i> مدرسه نمونه دولتی امام حسین (ع)
-                    </span>
-                    <span class="badge bg-warning text-dark me-3" style="font-family: 'B Nazanin';">سامانه آموزشی</span>
-                </div>
-                <div class="text-white">
-                    <span id="teacherName" class="me-3" style="font-family: 'B Nazanin';"></span>
-                    <span id="teacherSpecialty" class="badge bg-success me-2"></span>
-                    <button class="btn btn-sm btn-light" onclick="logout()" style="font-family: 'B Nazanin';">
-                        <i class="bi bi-box-arrow-right"></i> خروج
-                    </button>
-                </div>
+    <!-- مودال مدیریت دروس -->
+    <div id="subjectsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="card-title">
+                    <i class="fas fa-book"></i> مدیریت دروس
+                </h2>
+                <button class="close-btn" onclick="closeModal('subjectsModal')">&times;</button>
             </div>
-        </nav>
-
-        <!-- پنل مدیریت (فقط برای مدیر) -->
-        <div id="adminPanel" style="display: none;">
-            <div class="admin-panel">
-                <h6 style="color: var(--moe-blue); font-family: 'B Nazanin';">
-                    <i class="bi bi-person-gear"></i> پنل مدیریت سیستم
-                </h6>
-                <div class="row mt-3">
-                    <div class="col-md-8">
-                        <div class="card card-moe">
-                            <div class="card-header card-header-moe">
-                                <h6 class="mb-0"><i class="bi bi-people"></i> مدیریت معلمین</h6>
-                            </div>
-                            <div class="card-body">
-                                <form id="teacherForm">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control mb-2" id="teacherUsername" placeholder="کد پرسنلی" required>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="password" class="form-control mb-2" id="teacherPassword" placeholder="رمز عبور" required>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control mb-2" id="teacherNameInput" placeholder="نام معلم" required>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <select class="form-select mb-2" id="teacherSpecialtyInput" required>
-                                                <option value="">تخصص</option>
-                                                <option value="ریاضی">ریاضی</option>
-                                                <option value="فیزیک">فیزیک</option>
-                                                <option value="شیمی">شیمی</option>
-                                                <option value="ادبیات">ادبیات</option>
-                                                <option value="زبان انگلیسی">زبان انگلیسی</option>
-                                                <option value="عربی">عربی</option>
-                                                <option value="دین و زندگی">دین و زندگی</option>
-                                                <option value="تاریخ">تاریخ</option>
-                                                <option value="جغرافیا">جغرافیا</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label class="form-label">پایه‌های مجاز:</label>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="grade10" value="10">
-                                                <label class="form-check-label" for="grade10">دهم</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="grade11" value="11">
-                                                <label class="form-check-label" for="grade11">یازدهم</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="grade12" value="12">
-                                                <label class="form-check-label" for="grade12">دوازدهم</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="gradeAll" value="all">
-                                                <label class="form-check-label" for="gradeAll">همه پایه‌ها</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-moe w-100 mt-3">
-                                        <i class="bi bi-person-plus"></i> ثبت معلم جدید
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card card-moe">
-                            <div class="card-header card-header-moe">
-                                <h6 class="mb-0"><i class="bi bi-list-check"></i> لیست معلمین</h6>
-                            </div>
-                            <div class="card-body">
-                                <div id="teacherList">
-                                    <!-- لیست معلمین -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="input-group">
+                <label for="newSubject">نام درس جدید:</label>
+                <input type="text" id="newSubject" placeholder="مثال: ریاضی" onkeypress="handleSubjectKeyPress(event)">
             </div>
-        </div>
-
-        <!-- بخش خروجی PDF -->
-        <div class="pdf-section">
-            <h5 class="text-center mb-4" style="color: var(--moe-blue); font-family: 'B Nazanin';">
-                <i class="bi bi-file-earmark-pdf"></i> سیستم تولید کارنامه PDF
-            </h5>
-            
-            <div class="row g-3">
-                <!-- خروجی برای دانش‌آموز خاص -->
-                <div class="col-md-6">
-                    <div class="card card-moe">
-                        <div class="card-header card-header-moe">
-                            <h6 class="mb-0"><i class="bi bi-person"></i> کارنامه فردی</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label class="form-label">انتخاب دانش‌آموز</label>
-                                <select class="form-select" id="singleStudentSelect" style="font-family: 'B Nazanin';">
-                                    <option value="">انتخاب دانش‌آموز</option>
-                                </select>
-                            </div>
-                            <button class="btn btn-moe w-100" onclick="generateSinglePDF()">
-                                <i class="bi bi-download"></i> تولید کارنامه فردی (PDF)
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- خروجی برای کل کلاس -->
-                <div class="col-md-6">
-                    <div class="card card-moe">
-                        <div class="card-header card-header-moe">
-                            <h6 class="mb-0"><i class="bi bi-people"></i> کارنامه گروهی</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label class="form-label">انتخاب کلاس</label>
-                                <select class="form-select" id="classSelect" style="font-family: 'B Nazanin';">
-                                    <option value="">انتخاب کلاس</option>
-                                </select>
-                            </div>
-                            <button class="btn btn-success w-100" onclick="generateClassPDF()">
-                                <i class="bi bi-download"></i> تولید کارنامه کل کلاس (PDF)
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- خروجی برای همه دانش‌آموزان -->
-                <div class="col-12">
-                    <div class="card card-moe">
-                        <div class="card-header card-header-moe">
-                            <h6 class="mb-0"><i class="bi bi-collection"></i> کارنامه کامل</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <p class="mb-0">تولید کارنامه PDF برای تمامی دانش‌آموزان مدرسه</p>
-                                    <small class="text-muted">تعداد دانش‌آموزان: <span id="totalStudentsCount">0</span> نفر</small>
-                                </div>
-                                <div class="col-md-4 text-end">
-                                    <button class="btn btn-warning w-100" onclick="generateAllPDF()">
-                                        <i class="bi bi-download"></i> تولید همه کارنامه‌ها (PDF)
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-actions">
+                <button class="btn btn-success" onclick="addSubject()">
+                    <i class="fas fa-plus"></i> افزودن درس
+                </button>
             </div>
-        </div>
-
-        <div class="row">
-            <!-- پنل معلم -->
-            <div class="col-md-4">
-                <div class="teacher-panel">
-                    <h6 style="color: var(--moe-blue); font-family: 'B Nazanin';">
-                        <i class="bi bi-person-badge"></i> پنل اختصاصی معلم
-                    </h6>
-                    <div id="teacherInfo" class="mt-3">
-                        <!-- اطلاعات معلم -->
-                    </div>
-                </div>
-
-                <!-- مدیریت کلاس‌ها (فقط برای مدیر) -->
-                <div id="classManagementPanel" class="card card-moe" style="display: none;">
-                    <div class="card-header card-header-moe">
-                        <h6 class="mb-0"><i class="bi bi-house-door"></i> مدیریت کلاس‌ها</h6>
-                    </div>
-                    <div class="card-body">
-                        <form id="classForm">
-                            <div class="mb-3">
-                                <select class="form-select" id="gradeLevel" required style="font-family: 'B Nazanin';">
-                                    <option value="">پایه تحصیلی</option>
-                                    <option value="10">پایه دهم</option>
-                                    <option value="11">پایه یازدهم</option>
-                                    <option value="12">پایه دوازدهم</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <select class="form-select" id="field" required style="font-family: 'B Nazanin';">
-                                    <option value="">رشته تحصیلی</option>
-                                    <option value="riazi">ریاضی فیزیک</option>
-                                    <option value="tajrobi">علوم تجربی</option>
-                                    <option value="ensani">علوم انسانی</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" class="form-control text-center" id="className" placeholder="شماره کلاس" required style="font-family: 'B Nazanin';">
-                            </div>
-                            <button type="submit" class="btn btn-moe w-100">
-                                <i class="bi bi-plus-circle"></i> ایجاد کلاس جدید
-                            </button>
-                        </form>
-                        <div id="classList" class="mt-3">
-                            <!-- لیست کلاس‌ها -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- بخش دانش‌آموزان و نمرات -->
-            <div class="col-md-8">
-                <!-- ثبت دانش‌آموز (فقط برای مدیر) -->
-                <div id="studentManagementPanel" class="card card-moe mb-3" style="display: none;">
-                    <div class="card-header card-header-moe">
-                        <h6 class="mb-0"><i class="bi bi-people-fill"></i> ثبت نام دانش‌آموزان</h6>
-                    </div>
-                    <div class="card-body">
-                        <form id="studentForm">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control mb-2 text-center" id="studentFirstName" placeholder="نام" required style="font-family: 'B Nazanin';">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control mb-2 text-center" id="studentLastName" placeholder="نام خانوادگی" required style="font-family: 'B Nazanin';">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control mb-2 text-center" id="studentNationalCode" placeholder="کد ملی" required maxlength="10" style="font-family: 'B Nazanin';">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control mb-2 text-center" id="studentId" placeholder="ش دانش‌آموزی" required style="font-family: 'B Nazanin';">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <input type="date" class="form-control mb-2" id="studentBirthDate" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <select class="form-select" id="studentClass" required style="font-family: 'B Nazanin';">
-                                        <option value="">انتخاب کلاس</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-moe w-100">
-                                <i class="bi bi-person-plus"></i> ثبت نام دانش‌آموز
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- لیست دانش‌آموزان -->
-                <div class="card card-moe mb-3">
-                    <div class="card-header card-header-moe">
-                        <h6 class="mb-0"><i class="bi bi-list-ul"></i> لیست دانش‌آموزان</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="official-table">
-                                <thead>
-                                    <tr>
-                                        <th>ردیف</th>
-                                        <th>شماره</th>
-                                        <th>نام و نام خانوادگی</th>
-                                        <th>کد ملی</th>
-                                        <th>کلاس</th>
-                                        <th>عملیات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="studentList">
-                                    <!-- داده‌های دانش‌آموزان -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ورود نمرات -->
-                <div class="card card-moe">
-                    <div class="card-header card-header-moe">
-                        <h6 class="mb-0"><i class="bi bi-journal-text"></i> سیستم ورود نمرات</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3 align-items-end mb-4">
-                            <div class="col-md-4">
-                                <label class="form-label">انتخاب کلاس</label>
-                                <select class="form-select" id="gradeClass" required style="font-family: 'B Nazanin';" onchange="loadClassStudentsForGrades()">
-                                    <option value="">انتخاب کلاس</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">نوبت</label>
-                                <select class="form-select" id="gradeTerm" required style="font-family: 'B Nazanin';" onchange="loadClassStudentsForGrades()">
-                                    <option value="1">نوبت اول</option>
-                                    <option value="2">نوبت دوم</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">درس</label>
-                                <input type="text" class="form-control text-center" id="gradeSubject" readonly style="font-family: 'B Nazanin'; background: #f8f9fa;">
-                            </div>
-                            <div class="col-md-2">
-                                <button type="button" class="btn btn-moe w-100" onclick="saveAllGrades()">
-                                    <i class="bi bi-check-lg"></i> ذخیره همه
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- جدول دانش‌آموزان برای ثبت نمره -->
-                        <div id="classStudentsGradesTable" class="mt-4" style="display: none;">
-                            <h6>لیست دانش‌آموزان کلاس انتخاب شده</h6>
-                            <div class="table-responsive">
-                                <table class="official-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ردیف</th>
-                                            <th>شماره دانش‌آموزی</th>
-                                            <th>نام و نام خانوادگی</th>
-                                            <th>نمره قبلی</th>
-                                            <th>نمره جدید</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="classStudentsGradesList">
-                                        <!-- لیست دانش‌آموزان برای ثبت نمره -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="list-container" id="subjectsList">
+                <!-- لیست دروس اینجا نمایش داده می‌شود -->
             </div>
         </div>
     </div>
 
-    <!-- بارگذاری کتابخانه‌ها در انتهای صفحه -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    
+    <!-- مودال برنامه هفتگی -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="card-title">
+                    <i class="fas fa-calendar-alt"></i> برنامه هفتگی مدرسه
+                </h2>
+                <button class="close-btn" onclick="closeModal('scheduleModal')">&times;</button>
+            </div>
+            <div id="weeklyScheduleForm">
+                <!-- فرم برنامه هفتگی اینجا نمایش داده می‌شود -->
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-success" onclick="saveWeeklySchedule()">
+                    <i class="fas fa-save"></i> ذخیره برنامه
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال مدیریت امتحانات -->
+    <div id="examsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="card-title">
+                    <i class="fas fa-file-alt"></i> مدیریت امتحانات
+                </h2>
+                <button class="close-btn" onclick="closeModal('examsModal')">&times;</button>
+            </div>
+            <div class="input-group">
+                <label for="examSubject">درس:</label>
+                <select id="examSubject">
+                    <!-- دروس اینجا لود می‌شوند -->
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="examDate">تاریخ امتحان:</label>
+                <input type="date" id="examDate">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-success" onclick="addExam()">
+                    <i class="fas fa-plus"></i> افزودن امتحان
+                </button>
+            </div>
+            <div class="list-container" id="examsList">
+                <!-- لیست امتحانات اینجا نمایش داده می‌شود -->
+            </div>
+        </div>
+    </div>
+
     <script>
-        // داده‌های اولیه
-        let teachers = [
-            { 
-                username: '140201', 
-                password: '1234', 
-                name: 'محمد رضایی',
-                personalCode: '۱۴۰۲۰۱',
-                specialty: 'ریاضی',
-                grades: ['10', '11', '12'],
-                subjects: ['math'],
-                type: 'teacher'
-            },
-            { 
-                username: '140202', 
-                password: '1234', 
-                name: 'فاطمه کریمی',
-                personalCode: '۱۴۰۲۰۲', 
-                specialty: 'فیزیک',
-                grades: ['11', '12'],
-                subjects: ['physics'],
-                type: 'teacher'
-            },
-            { 
-                username: '140203', 
-                password: '1234', 
-                name: 'علی محمدی',
-                personalCode: '۱۴۰۲۰۳',
-                specialty: 'ادبیات',
-                grades: ['10', '11', '12'],
-                subjects: ['literature'],
-                type: 'teacher'
-            },
-            { 
-                username: '140200', 
-                password: '1234', 
-                name: 'مدیریت سیستم',
-                personalCode: '۱۴۰۲۰۰',
-                specialty: 'مدیریت',
-                grades: ['all'],
-                subjects: ['all'],
-                type: 'admin'
-            }
-        ];
+        // داده‌های برنامه
+        let appData = {
+            subjects: [],
+            weeklySchedule: {},
+            exams: [],
+            completedTasks: [],
+            studyTime: 0,
+            timerSeconds: 25 * 60,
+            timerRunning: false,
+            timerInterval: null
+        };
 
-        let currentTeacher = null;
-        let classes = JSON.parse(localStorage.getItem('imamHusseinClasses')) || [];
-        let students = JSON.parse(localStorage.getItem('imamHusseinStudents')) || [];
-        let grades = JSON.parse(localStorage.getItem('imamHusseinGrades')) || [];
-        let savedTeachers = JSON.parse(localStorage.getItem('imamHusseinTeachers'));
+        // روزهای هفته
+        const days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
 
-        if (savedTeachers) {
-            teachers = savedTeachers;
-        }
-
-        // توابع اصلی
-        function saveAllData() {
-            localStorage.setItem('imamHusseinClasses', JSON.stringify(classes));
-            localStorage.setItem('imamHusseinStudents', JSON.stringify(students));
-            localStorage.setItem('imamHusseinGrades', JSON.stringify(grades));
-            localStorage.setItem('imamHusseinTeachers', JSON.stringify(teachers));
-        }
-
-        // سیستم لاگین
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            const teacher = teachers.find(t => t.username === username && t.password === password);
-            
-            if (teacher) {
-                currentTeacher = teacher;
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('teacherName').textContent = teacher.name;
-                document.getElementById('teacherSpecialty').textContent = teacher.specialty;
-                document.getElementById('gradeSubject').value = teacher.specialty;
-                
-                // تنظیم دسترسی‌ها - فقط مدیر به پنل مدیریت دسترسی دارد
-                if (teacher.type === 'admin') {
-                    document.getElementById('adminPanel').style.display = 'block';
-                    document.getElementById('classManagementPanel').style.display = 'block';
-                    document.getElementById('studentManagementPanel').style.display = 'block';
-                    loadTeacherList();
-                } else {
-                    document.getElementById('adminPanel').style.display = 'none';
-                    document.getElementById('classManagementPanel').style.display = 'none';
-                    document.getElementById('studentManagementPanel').style.display = 'none';
-                }
-                
-                loadTeacherInfo();
-                loadDashboard();
-            } else {
-                alert('کد پرسنلی یا رمز عبور اشتباه است!');
-            }
-        });
-
-        // ثبت معلم جدید
-        document.getElementById('teacherForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('ثبت معلم جدید فراخوانی شد');
-            
-            const username = document.getElementById('teacherUsername').value;
-            const password = document.getElementById('teacherPassword').value;
-            const name = document.getElementById('teacherNameInput').value;
-            const specialty = document.getElementById('teacherSpecialtyInput').value;
-            
-            if (!username || !password || !name || !specialty) {
-                alert('لطفاً تمام فیلدها را پر کنید!');
-                return;
-            }
-            
-            if (teachers.find(t => t.username === username)) {
-                alert('این کد پرسنلی قبلاً ثبت شده است!');
-                return;
-            }
-            
-            const selectedGrades = [];
-            if (document.getElementById('grade10').checked) selectedGrades.push('10');
-            if (document.getElementById('grade11').checked) selectedGrades.push('11');
-            if (document.getElementById('grade12').checked) selectedGrades.push('12');
-            if (document.getElementById('gradeAll').checked) selectedGrades.push('all');
-            
-            if (selectedGrades.length === 0) {
-                alert('حداقل یک پایه باید انتخاب شود!');
-                return;
-            }
-            
-            const newTeacher = {
-                username: username,
-                password: password,
-                name: name,
-                personalCode: username,
-                specialty: specialty,
-                grades: selectedGrades,
-                subjects: [specialty],
-                type: 'teacher'
+        // تاریخ شمسی
+        function getPersianDate() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                calendar: 'persian',
+                numberingSystem: 'arab'
             };
-            
-            teachers.push(newTeacher);
-            document.getElementById('teacherForm').reset();
-            saveAllData();
-            loadTeacherList();
-            
-            alert(`معلم ${name} با موفقیت ثبت شد!\nکد پرسنلی: ${username}\nرمز عبور: ${password}`);
-        });
-
-        // ایجاد کلاس جدید
-        document.getElementById('classForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('ایجاد کلاس جدید فراخوانی شد');
-            
-            const gradeLevel = document.getElementById('gradeLevel').value;
-            const field = document.getElementById('field').value;
-            const className = document.getElementById('className').value;
-            
-            if (!gradeLevel || !field || !className) {
-                alert('لطفاً تمام فیلدها را پر کنید!');
-                return;
-            }
-            
-            const classId = Date.now().toString();
-            const fieldName = getFieldName(field);
-            const gradeName = getGradeName(gradeLevel);
-            
-            classes.push({
-                id: classId,
-                grade: gradeLevel,
-                gradeName: gradeName,
-                field: field,
-                fieldName: fieldName,
-                name: className,
-                fullName: `پایه ${gradeName} - ${fieldName} - کلاس ${className}`,
-                createdBy: currentTeacher.username
-            });
-            
-            document.getElementById('classForm').reset();
-            saveAllData();
-            loadClasses();
-            loadStudentClassSelect();
-            loadGradeClassSelect();
-            loadPDFSelects();
-            
-            alert(`کلاس ${className} با موفقیت ایجاد شد!`);
-        });
-
-        // ثبت دانش‌آموز جدید
-        document.getElementById('studentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('ثبت دانش‌آموز جدید فراخوانی شد');
-            
-            const firstName = document.getElementById('studentFirstName').value;
-            const lastName = document.getElementById('studentLastName').value;
-            const nationalCode = document.getElementById('studentNationalCode').value;
-            const studentId = document.getElementById('studentId').value;
-            const birthDate = document.getElementById('studentBirthDate').value;
-            const classId = document.getElementById('studentClass').value;
-            
-            if (!firstName || !lastName || !nationalCode || !studentId || !birthDate || !classId) {
-                alert('لطفاً تمام فیلدها را پر کنید!');
-                return;
-            }
-            
-            const selectedClass = classes.find(c => c.id === classId);
-            if (!selectedClass) {
-                alert('کلاس انتخاب شده معتبر نیست!');
-                return;
-            }
-            
-            students.push({
-                id: Date.now().toString(),
-                firstName: firstName,
-                lastName: lastName,
-                nationalCode: nationalCode,
-                studentId: studentId,
-                birthDate: birthDate,
-                classId: classId,
-                className: selectedClass.fullName,
-                grade: selectedClass.grade,
-                field: selectedClass.field,
-                createdBy: currentTeacher.username
-            });
-            
-            document.getElementById('studentForm').reset();
-            saveAllData();
-            loadStudents();
-            loadPDFSelects();
-            
-            alert(`دانش‌آموز ${firstName} ${lastName} با موفقیت ثبت شد!`);
-        });
-
-        // بارگذاری داشبورد
-        function loadDashboard() {
-            loadClasses();
-            loadStudents();
-            loadStudentClassSelect();
-            loadGradeClassSelect();
-            loadPDFSelects();
+            return new Intl.DateTimeFormat('fa-IR', options).format(now);
         }
 
-        // بارگذاری انتخاب‌های PDF
-        function loadPDFSelects() {
-            const singleSelect = document.getElementById('singleStudentSelect');
-            const classSelect = document.getElementById('classSelect');
-            
-            singleSelect.innerHTML = '<option value="">انتخاب دانش‌آموز</option>';
-            students.forEach(student => {
-                const option = document.createElement('option');
-                option.value = student.id;
-                option.textContent = `${student.firstName} ${student.lastName} - ${student.className}`;
-                singleSelect.appendChild(option);
-            });
-            
-            classSelect.innerHTML = '<option value="">انتخاب کلاس</option>';
-            classes.forEach(classItem => {
-                const option = document.createElement('option');
-                option.value = classItem.id;
-                option.textContent = classItem.fullName;
-                classSelect.appendChild(option);
-            });
-            
-            document.getElementById('totalStudentsCount').textContent = students.length;
-        }
-
-        // بارگذاری لیست معلمین
-        function loadTeacherList() {
-            const teacherList = document.getElementById('teacherList');
-            teacherList.innerHTML = '';
-            
-            const regularTeachers = teachers.filter(t => t.type === 'teacher');
-            
-            if (regularTeachers.length === 0) {
-                teacherList.innerHTML = '<div class="alert alert-info text-center">هنوز معلمی ثبت نشده است</div>';
-                return;
-            }
-            
-            regularTeachers.forEach(teacher => {
-                const teacherElement = document.createElement('div');
-                teacherElement.className = 'alert alert-secondary d-flex justify-content-between align-items-center mb-2';
-                teacherElement.innerHTML = `
-                    <div>
-                        <strong>${teacher.name}</strong>
-                        <br>
-                        <small>کد: ${teacher.personalCode} | تخصص: ${teacher.specialty}</small>
-                    </div>
-                    <button class="btn btn-sm btn-danger" onclick="deleteTeacher('${teacher.username}')">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                `;
-                teacherList.appendChild(teacherElement);
-            });
-        }
-
-        // بارگذاری کلاس‌ها
-        function loadClasses() {
-            const classList = document.getElementById('classList');
-            classList.innerHTML = '';
-            
-            if (classes.length === 0) {
-                classList.innerHTML = '<div class="alert alert-info text-center">هنوز کلاسی ایجاد نشده است</div>';
-                return;
-            }
-            
-            classes.forEach(classItem => {
-                const classElement = document.createElement('div');
-                classElement.className = 'alert alert-secondary mb-2';
-                classElement.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>${classItem.fullName}</strong>
-                            <br>
-                            <small>تعداد دانش‌آموزان: ${students.filter(s => s.classId === classItem.id).length} نفر</small>
-                        </div>
-                        <button class="btn btn-sm btn-danger" onclick="deleteClass('${classItem.id}')">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
-                `;
-                classList.appendChild(classElement);
-            });
-        }
-
-        // بارگذاری دانش‌آموزان
-        function loadStudents() {
-            const studentList = document.getElementById('studentList');
-            studentList.innerHTML = '';
-            
-            if (students.length === 0) {
-                studentList.innerHTML = '<tr><td colspan="6" class="text-center py-4">هنوز دانش‌آموزی ثبت نشده است</td></tr>';
-                return;
-            }
-            
-            students.forEach((student, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${student.studentId}</td>
-                    <td>${student.firstName} ${student.lastName}</td>
-                    <td>${student.nationalCode}</td>
-                    <td>${student.className}</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger" onclick="deleteStudent('${student.id}')">
-                            <i class="bi bi-trash"></i> حذف
-                        </button>
-                    </td>
-                `;
-                studentList.appendChild(row);
-            });
-        }
-
-        // بارگذاری انتخاب کلاس برای ثبت دانش‌آموز
-        function loadStudentClassSelect() {
-            const select = document.getElementById('studentClass');
-            select.innerHTML = '<option value="">انتخاب کلاس</option>';
-            classes.forEach(classItem => {
-                const option = document.createElement('option');
-                option.value = classItem.id;
-                option.textContent = classItem.fullName;
-                select.appendChild(option);
-            });
-        }
-
-        // بارگذاری انتخاب کلاس برای نمره‌دهی
-        function loadGradeClassSelect() {
-            const select = document.getElementById('gradeClass');
-            select.innerHTML = '<option value="">انتخاب کلاس</option>';
-            classes.forEach(classItem => {
-                const option = document.createElement('option');
-                option.value = classItem.id;
-                option.textContent = classItem.fullName;
-                select.appendChild(option);
-            });
-        }
-
-        // بارگذاری دانش‌آموزان کلاس برای ثبت نمره
-        function loadClassStudentsForGrades() {
-            const classId = document.getElementById('gradeClass').value;
-            const table = document.getElementById('classStudentsGradesTable');
-            const list = document.getElementById('classStudentsGradesList');
-            
-            if (!classId) {
-                table.style.display = 'none';
-                return;
-            }
-            
-            const classStudents = students.filter(s => s.classId === classId);
-            const term = document.getElementById('gradeTerm').value;
-            
-            list.innerHTML = '';
-            
-            if (classStudents.length === 0) {
-                list.innerHTML = '<tr><td colspan="5" class="text-center py-4">هیچ دانش‌آموزی در این کلاس ثبت نشده است</td></tr>';
-                table.style.display = 'block';
-                return;
-            }
-            
-            classStudents.forEach((student, index) => {
-                const existingGrade = grades.find(g => 
-                    g.studentId === student.id && 
-                    g.subject === currentTeacher.specialty && 
-                    g.term === term
-                );
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${student.studentId}</td>
-                    <td>${student.firstName} ${student.lastName}</td>
-                    <td class="text-center">${existingGrade ? existingGrade.grade : '-'}</td>
-                    <td>
-                        <input type="number" 
-                               min="0" 
-                               max="20" 
-                               step="0.25" 
-                               class="form-control form-control-sm text-center grade-input" 
-                               data-student-id="${student.id}"
-                               value="${existingGrade ? existingGrade.grade : ''}"
-                               placeholder="0-20">
-                    </td>
-                `;
-                list.appendChild(row);
-            });
-            
-            table.style.display = 'block';
-        }
-
-        // ذخیره همه نمرات
-        function saveAllGrades() {
-            const classId = document.getElementById('gradeClass').value;
-            const term = document.getElementById('gradeTerm').value;
-            
-            if (!classId) {
-                alert('لطفاً ابتدا یک کلاس انتخاب کنید!');
-                return;
-            }
-            
-            const gradeInputs = document.querySelectorAll('.grade-input');
-            let savedCount = 0;
-            let errorCount = 0;
-            
-            gradeInputs.forEach(input => {
-                const studentId = input.getAttribute('data-student-id');
-                const gradeValue = parseFloat(input.value);
-                
-                if (!isNaN(gradeValue) && gradeValue >= 0 && gradeValue <= 20) {
-                    // حذف نمره قبلی اگر وجود دارد
-                    grades = grades.filter(g => 
-                        !(g.studentId === studentId && 
-                          g.subject === currentTeacher.specialty && 
-                          g.term === term)
-                    );
-                    
-                    // اضافه کردن نمره جدید
-                    grades.push({
-                        id: Date.now().toString() + Math.random(),
-                        studentId: studentId,
-                        subject: currentTeacher.specialty,
-                        grade: gradeValue,
-                        term: term,
-                        teacher: currentTeacher.name,
-                        date: new Date().toLocaleDateString('fa-IR')
-                    });
-                    
-                    savedCount++;
-                } else if (input.value.trim() !== '') {
-                    errorCount++;
-                }
-            });
-            
-            saveAllData();
-            
-            if (errorCount > 0) {
-                alert(`${savedCount} نمره ذخیره شد! ${errorCount} نمره نامعتبر بود.`);
-            } else {
-                alert(`${savedCount} نمره با موفقیت ذخیره شد!`);
-            }
-            
-            // بروزرسانی نمایش
-            loadClassStudentsForGrades();
-        }
-
-        // تولید PDF برای یک دانش‌آموز
-        function generateSinglePDF() {
-            try {
-                const studentId = document.getElementById('singleStudentSelect').value;
-                if (!studentId) {
-                    alert('لطفاً یک دانش‌آموز انتخاب کنید!');
-                    return;
-                }
-                
-                const student = students.find(s => s.id === studentId);
-                if (!student) {
-                    alert('دانش‌آموز پیدا نشد!');
-                    return;
-                }
-
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                // اضافه کردن فونت فارسی (استفاده از فونت استاندارد)
-                doc.setFont('helvetica');
-                
-                // هدر کارنامه - طراحی رسمی
-                doc.setFillColor(30, 58, 138);
-                doc.rect(0, 0, 210, 40, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(18);
-                doc.text('کارنامه تحصیلی', 105, 15, { align: 'center' });
-                doc.setFontSize(12);
-                doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, 25, { align: 'center' });
-                doc.setFontSize(10);
-                doc.text('سال تحصیلی ۱۴۰۳-۱۴۰۴', 105, 32, { align: 'center' });
-                
-                // اطلاعات دانش‌آموز - جدول بندی شده
-                doc.setTextColor(0, 0, 0);
-                doc.setFontSize(11);
-                
-                // ایجاد جدول اطلاعات دانش‌آموز
-                const studentInfo = [
-                    ['نام و نام خانوادگی:', student.firstName + ' ' + student.lastName],
-                    ['شماره دانش‌آموزی:', student.studentId],
-                    ['کد ملی:', student.nationalCode],
-                    ['کلاس:', student.className],
-                    ['تاریخ تولد:', new Date(student.birthDate).toLocaleDateString('fa-IR')]
-                ];
-                
-                let y = 50;
-                studentInfo.forEach(([label, value]) => {
-                    doc.setFillColor(240, 240, 240);
-                    doc.rect(20, y, 170, 8, 'F');
-                    doc.setTextColor(0, 0, 0);
-                    doc.text(label, 25, y + 5);
-                    doc.text(value, 120, y + 5);
-                    y += 10;
-                });
-                
-                y += 10;
-                
-                // جدول نمرات - طراحی رسمی
-                const studentGrades = grades.filter(g => g.studentId === studentId);
-                const subjectGrades = {};
-                
-                studentGrades.forEach(grade => {
-                    if (!subjectGrades[grade.subject]) {
-                        subjectGrades[grade.subject] = {};
-                    }
-                    subjectGrades[grade.subject][grade.term] = grade.grade;
-                });
-                
-                // دروس مختلف
-                const subjects = [
-                    'ریاضی', 'فیزیک', 'شیمی', 'ادبیات فارسی', 
-                    'زبان انگلیسی', 'عربی', 'دین و زندگی', 
-                    'تاریخ', 'جغرافیا', 'هنر', 'تربیت بدنی'
-                ];
-                
-                // ایجاد جدول نمرات
-                const tableData = [];
-                let totalSum = 0;
-                let subjectCount = 0;
-                
-                subjects.forEach(subject => {
-                    const grade1 = subjectGrades[subject]?.['1'] || '-';
-                    const grade2 = subjectGrades[subject]?.['2'] || '-';
-                    
-                    let average = '-';
-                    let status = '-';
-                    
-                    if (grade1 !== '-' && grade2 !== '-') {
-                        average = ((grade1 + grade2) / 2).toFixed(2);
-                        totalSum += parseFloat(average);
-                        subjectCount++;
-                        
-                        if (average >= 17) status = 'عالی';
-                        else if (average >= 15) status = 'خیلی خوب';
-                        else if (average >= 12) status = 'خوب';
-                        else if (average >= 10) status = 'قابل قبول';
-                        else status = 'نیاز به تلاش';
-                    }
-                    
-                    tableData.push([
-                        subject,
-                        grade1.toString(),
-                        grade2.toString(),
-                        average,
-                        status
-                    ]);
-                });
-                
-                // سرستون جدول
-                doc.setFillColor(30, 58, 138);
-                doc.rect(10, y, 190, 10, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.text('ردیف', 25, y + 6);
-                doc.text('نام درس', 60, y + 6);
-                doc.text('نوبت اول', 120, y + 6);
-                doc.text('نوبت دوم', 150, y + 6);
-                doc.text('معدل', 170, y + 6);
-                doc.text('وضعیت', 190, y + 6);
-                
-                y += 10;
-                
-                // محتوای جدول
-                doc.setTextColor(0, 0, 0);
-                tableData.forEach((row, index) => {
-                    if (y > 250) {
-                        doc.addPage();
-                        y = 20;
-                    }
-                    
-                    // رنگ‌آمیزی سطرها
-                    if (index % 2 === 0) {
-                        doc.setFillColor(245, 245, 245);
-                    } else {
-                        doc.setFillColor(255, 255, 255);
-                    }
-                    doc.rect(10, y, 190, 8, 'F');
-                    
-                    doc.text((index + 1).toString(), 25, y + 5);
-                    doc.text(row[0], 60, y + 5);
-                    doc.text(row[1], 120, y + 5);
-                    doc.text(row[2], 150, y + 5);
-                    doc.text(row[3], 170, y + 5);
-                    doc.text(row[4], 190, y + 5);
-                    
-                    y += 8;
-                });
-                
-                y += 10;
-                
-                // محاسبه معدل کل
-                const overallAverage = subjectCount > 0 ? (totalSum / subjectCount).toFixed(2) : '0.00';
-                
-                // نمایش معدل کل
-                doc.setFillColor(220, 237, 200);
-                doc.rect(120, y, 80, 12, 'F');
-                doc.setTextColor(0, 100, 0);
-                doc.setFontSize(12);
-                doc.text(`معدل کل: ${overallAverage}`, 160, y + 8, { align: 'center' });
-                
-                y += 20;
-                
-                // مهر و امضای رسمی
-                doc.setDrawColor(220, 38, 38);
-                doc.setLineWidth(1);
-                doc.rect(50, y, 110, 40);
-                
-                doc.setTextColor(0, 0, 0);
-                doc.setFontSize(10);
-                doc.text('مهر و امضای مدیر مدرسه', 105, y + 10, { align: 'center' });
-                doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, y + 20, { align: 'center' });
-                doc.text('تاریخ: ' + new Date().toLocaleDateString('fa-IR'), 105, y + 30, { align: 'center' });
-                
-                // ذخیره فایل با نام فارسی
-                doc.save(`کارنامه_${student.firstName}_${student.lastName}.pdf`);
-                alert('کارنامه با موفقیت تولید شد!');
-                
-            } catch (error) {
-                console.error('خطا در تولید PDF:', error);
-                alert('خطا در تولید PDF! لطفاً دوباره تلاش کنید.');
-            }
-        }
-
-        // تولید PDF برای کل کلاس
-        function generateClassPDF() {
-            try {
-                const classId = document.getElementById('classSelect').value;
-                if (!classId) {
-                    alert('لطفاً یک کلاس انتخاب کنید!');
-                    return;
-                }
-                
-                const classStudents = students.filter(s => s.classId === classId);
-                if (classStudents.length === 0) {
-                    alert('این کلاس دانش‌آموزی ندارد!');
-                    return;
-                }
-
-                const { jsPDF } = window.jspdf;
-                const className = classes.find(c => c.id === classId).fullName;
-                
-                classStudents.forEach((student, index) => {
-                    if (index > 0) {
-                        doc.addPage();
-                    }
-                    
-                    const doc = new jsPDF();
-                    
-                    // طراحی مشابه کارنامه فردی اما برای هر دانش‌آموز
-                    doc.setFont('helvetica');
-                    
-                    // هدر
-                    doc.setFillColor(30, 58, 138);
-                    doc.rect(0, 0, 210, 40, 'F');
-                    doc.setTextColor(255, 255, 255);
-                    doc.setFontSize(18);
-                    doc.text('کارنامه تحصیلی', 105, 15, { align: 'center' });
-                    doc.setFontSize(12);
-                    doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, 25, { align: 'center' });
-                    doc.setFontSize(10);
-                    doc.text('سال تحصیلی ۱۴۰۳-۱۴۰۴', 105, 32, { align: 'center' });
-                    
-                    // اطلاعات دانش‌آموز
-                    doc.setTextColor(0, 0, 0);
-                    doc.setFontSize(11);
-                    
-                    const studentInfo = [
-                        ['نام و نام خانوادگی:', student.firstName + ' ' + student.lastName],
-                        ['شماره دانش‌آموزی:', student.studentId],
-                        ['کلاس:', student.className]
-                    ];
-                    
-                    let y = 50;
-                    studentInfo.forEach(([label, value]) => {
-                        doc.setFillColor(240, 240, 240);
-                        doc.rect(20, y, 170, 8, 'F');
-                        doc.setTextColor(0, 0, 0);
-                        doc.text(label, 25, y + 5);
-                        doc.text(value, 120, y + 5);
-                        y += 10;
-                    });
-                    
-                    y += 10;
-                    
-                    // جدول نمرات
-                    const studentGrades = grades.filter(g => g.studentId === student.id);
-                    const subjectGrades = {};
-                    
-                    studentGrades.forEach(grade => {
-                        if (!subjectGrades[grade.subject]) {
-                            subjectGrades[grade.subject] = {};
-                        }
-                        subjectGrades[grade.subject][grade.term] = grade.grade;
-                    });
-                    
-                    const subjects = [
-                        'ریاضی', 'فیزیک', 'شیمی', 'ادبیات فارسی', 
-                        'زبان انگلیسی', 'عربی', 'دین و زندگی', 
-                        'تاریخ', 'جغرافیا', 'هنر', 'تربیت بدنی'
-                    ];
-                    
-                    const tableData = [];
-                    let totalSum = 0;
-                    let subjectCount = 0;
-                    
-                    subjects.forEach(subject => {
-                        const grade1 = subjectGrades[subject]?.['1'] || '-';
-                        const grade2 = subjectGrades[subject]?.['2'] || '-';
-                        
-                        let average = '-';
-                        let status = '-';
-                        
-                        if (grade1 !== '-' && grade2 !== '-') {
-                            average = ((grade1 + grade2) / 2).toFixed(2);
-                            totalSum += parseFloat(average);
-                            subjectCount++;
-                            
-                            if (average >= 17) status = 'عالی';
-                            else if (average >= 15) status = 'خیلی خوب';
-                            else if (average >= 12) status = 'خوب';
-                            else if (average >= 10) status = 'قابل قبول';
-                            else status = 'نیاز به تلاش';
-                        }
-                        
-                        tableData.push([
-                            subject,
-                            grade1.toString(),
-                            grade2.toString(),
-                            average,
-                            status
-                        ]);
-                    });
-                    
-                    // سرستون جدول
-                    doc.setFillColor(30, 58, 138);
-                    doc.rect(10, y, 190, 10, 'F');
-                    doc.setTextColor(255, 255, 255);
-                    doc.text('ردیف', 25, y + 6);
-                    doc.text('نام درس', 60, y + 6);
-                    doc.text('نوبت اول', 120, y + 6);
-                    doc.text('نوبت دوم', 150, y + 6);
-                    doc.text('معدل', 170, y + 6);
-                    doc.text('وضعیت', 190, y + 6);
-                    
-                    y += 10;
-                    
-                    // محتوای جدول
-                    doc.setTextColor(0, 0, 0);
-                    tableData.forEach((row, index) => {
-                        if (y > 250) {
-                            doc.addPage();
-                            y = 20;
-                        }
-                        
-                        if (index % 2 === 0) {
-                            doc.setFillColor(245, 245, 245);
-                        } else {
-                            doc.setFillColor(255, 255, 255);
-                        }
-                        doc.rect(10, y, 190, 8, 'F');
-                        
-                        doc.text((index + 1).toString(), 25, y + 5);
-                        doc.text(row[0], 60, y + 5);
-                        doc.text(row[1], 120, y + 5);
-                        doc.text(row[2], 150, y + 5);
-                        doc.text(row[3], 170, y + 5);
-                        doc.text(row[4], 190, y + 5);
-                        
-                        y += 8;
-                    });
-                    
-                    y += 10;
-                    
-                    // معدل کل
-                    const overallAverage = subjectCount > 0 ? (totalSum / subjectCount).toFixed(2) : '0.00';
-                    
-                    doc.setFillColor(220, 237, 200);
-                    doc.rect(120, y, 80, 12, 'F');
-                    doc.setTextColor(0, 100, 0);
-                    doc.setFontSize(12);
-                    doc.text(`معدل کل: ${overallAverage}`, 160, y + 8, { align: 'center' });
-                    
-                    y += 20;
-                    
-                    // مهر و امضا
-                    doc.setDrawColor(220, 38, 38);
-                    doc.setLineWidth(1);
-                    doc.rect(50, y, 110, 40);
-                    
-                    doc.setTextColor(0, 0, 0);
-                    doc.setFontSize(10);
-                    doc.text('مهر و امضای مدیر مدرسه', 105, y + 10, { align: 'center' });
-                    doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, y + 20, { align: 'center' });
-                    doc.text('تاریخ: ' + new Date().toLocaleDateString('fa-IR'), 105, y + 30, { align: 'center' });
-                    
-                    if (index === 0) {
-                        var finalDoc = doc;
-                    }
-                });
-                
-                finalDoc.save(`کارنامه_${className}.pdf`);
-                alert(`کارنامه کلاس ${className} با موفقیت تولید شد!`);
-                
-            } catch (error) {
-                console.error('خطا در تولید PDF:', error);
-                alert('خطا در تولید PDF! لطفاً دوباره تلاش کنید.');
-            }
-        }
-
-        // تولید PDF برای همه دانش‌آموزان
-        function generateAllPDF() {
-            try {
-                if (students.length === 0) {
-                    alert('هیچ دانش‌آموزی برای تولید کارنامه وجود ندارد!');
-                    return;
-                }
-
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                students.forEach((student, index) => {
-                    if (index > 0) {
-                        doc.addPage();
-                    }
-                    
-                    // محتوای مشابه کارنامه فردی برای هر دانش‌آموز
-                    doc.setFont('helvetica');
-                    
-                    doc.setFillColor(30, 58, 138);
-                    doc.rect(0, 0, 210, 40, 'F');
-                    doc.setTextColor(255, 255, 255);
-                    doc.setFontSize(18);
-                    doc.text('کارنامه تحصیلی', 105, 15, { align: 'center' });
-                    doc.setFontSize(12);
-                    doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, 25, { align: 'center' });
-                    doc.setFontSize(10);
-                    doc.text('سال تحصیلی ۱۴۰۳-۱۴۰۴', 105, 32, { align: 'center' });
-                    
-                    doc.setTextColor(0, 0, 0);
-                    doc.setFontSize(11);
-                    
-                    const studentInfo = [
-                        ['نام و نام خانوادگی:', student.firstName + ' ' + student.lastName],
-                        ['شماره دانش‌آموزی:', student.studentId],
-                        ['کلاس:', student.className]
-                    ];
-                    
-                    let y = 50;
-                    studentInfo.forEach(([label, value]) => {
-                        doc.setFillColor(240, 240, 240);
-                        doc.rect(20, y, 170, 8, 'F');
-                        doc.setTextColor(0, 0, 0);
-                        doc.text(label, 25, y + 5);
-                        doc.text(value, 120, y + 5);
-                        y += 10;
-                    });
-                    
-                    y += 10;
-                    
-                    const studentGrades = grades.filter(g => g.studentId === student.id);
-                    const subjectGrades = {};
-                    
-                    studentGrades.forEach(grade => {
-                        if (!subjectGrades[grade.subject]) {
-                            subjectGrades[grade.subject] = {};
-                        }
-                        subjectGrades[grade.subject][grade.term] = grade.grade;
-                    });
-                    
-                    const subjects = [
-                        'ریاضی', 'فیزیک', 'شیمی', 'ادبیات فارسی', 
-                        'زبان انگلیسی', 'عربی', 'دین و زندگی', 
-                        'تاریخ', 'جغرافیا', 'هنر', 'تربیت بدنی'
-                    ];
-                    
-                    const tableData = [];
-                    let totalSum = 0;
-                    let subjectCount = 0;
-                    
-                    subjects.forEach(subject => {
-                        const grade1 = subjectGrades[subject]?.['1'] || '-';
-                        const grade2 = subjectGrades[subject]?.['2'] || '-';
-                        
-                        let average = '-';
-                        let status = '-';
-                        
-                        if (grade1 !== '-' && grade2 !== '-') {
-                            average = ((grade1 + grade2) / 2).toFixed(2);
-                            totalSum += parseFloat(average);
-                            subjectCount++;
-                            
-                            if (average >= 17) status = 'عالی';
-                            else if (average >= 15) status = 'خیلی خوب';
-                            else if (average >= 12) status = 'خوب';
-                            else if (average >= 10) status = 'قابل قبول';
-                            else status = 'نیاز به تلاش';
-                        }
-                        
-                        tableData.push([
-                            subject,
-                            grade1.toString(),
-                            grade2.toString(),
-                            average,
-                            status
-                        ]);
-                    });
-                    
-                    doc.setFillColor(30, 58, 138);
-                    doc.rect(10, y, 190, 10, 'F');
-                    doc.setTextColor(255, 255, 255);
-                    doc.text('ردیف', 25, y + 6);
-                    doc.text('نام درس', 60, y + 6);
-                    doc.text('نوبت اول', 120, y + 6);
-                    doc.text('نوبت دوم', 150, y + 6);
-                    doc.text('معدل', 170, y + 6);
-                    doc.text('وضعیت', 190, y + 6);
-                    
-                    y += 10;
-                    
-                    doc.setTextColor(0, 0, 0);
-                    tableData.forEach((row, index) => {
-                        if (y > 250) {
-                            doc.addPage();
-                            y = 20;
-                        }
-                        
-                        if (index % 2 === 0) {
-                            doc.setFillColor(245, 245, 245);
-                        } else {
-                            doc.setFillColor(255, 255, 255);
-                        }
-                        doc.rect(10, y, 190, 8, 'F');
-                        
-                        doc.text((index + 1).toString(), 25, y + 5);
-                        doc.text(row[0], 60, y + 5);
-                        doc.text(row[1], 120, y + 5);
-                        doc.text(row[2], 150, y + 5);
-                        doc.text(row[3], 170, y + 5);
-                        doc.text(row[4], 190, y + 5);
-                        
-                        y += 8;
-                    });
-                    
-                    y += 10;
-                    
-                    const overallAverage = subjectCount > 0 ? (totalSum / subjectCount).toFixed(2) : '0.00';
-                    
-                    doc.setFillColor(220, 237, 200);
-                    doc.rect(120, y, 80, 12, 'F');
-                    doc.setTextColor(0, 100, 0);
-                    doc.setFontSize(12);
-                    doc.text(`معدل کل: ${overallAverage}`, 160, y + 8, { align: 'center' });
-                    
-                    y += 20;
-                    
-                    doc.setDrawColor(220, 38, 38);
-                    doc.setLineWidth(1);
-                    doc.rect(50, y, 110, 40);
-                    
-                    doc.setTextColor(0, 0, 0);
-                    doc.setFontSize(10);
-                    doc.text('مهر و امضای مدیر مدرسه', 105, y + 10, { align: 'center' });
-                    doc.text('مدرسه نمونه دولتی امام حسین (ع)', 105, y + 20, { align: 'center' });
-                    doc.text('تاریخ: ' + new Date().toLocaleDateString('fa-IR'), 105, y + 30, { align: 'center' });
-                });
-                
-                doc.save('کارنامه_همه_دانش_آموزان.pdf');
-                alert(`کارنامه ${students.length} دانش‌آموز با موفقیت تولید شد!`);
-                
-            } catch (error) {
-                console.error('خطا در تولید PDF:', error);
-                alert('خطا در تولید PDF! لطفاً دوباره تلاش کنید.');
-            }
-        }
-
-        // توابع کمکی
-        function loadTeacherInfo() {
-            const teacherInfo = document.getElementById('teacherInfo');
-            if (currentTeacher) {
-                teacherInfo.innerHTML = `
-                    <div class="text-center">
-                        <div class="fw-bold" style="color: var(--moe-blue);">${currentTeacher.name}</div>
-                        <div class="text-muted">کد پرسنلی: ${currentTeacher.personalCode}</div>
-                        <div class="mt-2">
-                            <span class="subject-badge">${currentTeacher.specialty}</span>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        function logout() {
-            if (confirm('آیا می‌خواهید از سیستم خارج شوید؟')) {
-                currentTeacher = null;
-                document.getElementById('dashboard').style.display = 'none';
-                document.getElementById('loginPage').style.display = 'block';
-                document.getElementById('loginForm').reset();
-            }
-        }
-
-        function deleteTeacher(username) {
-            if (confirm('آیا از حذف این معلم مطمئن هستید؟')) {
-                teachers = teachers.filter(t => t.username !== username);
-                saveAllData();
-                loadTeacherList();
-            }
-        }
-
-        function deleteClass(classId) {
-            if (confirm('آیا از حذف این کلاس مطمئن هستید؟')) {
-                classes = classes.filter(c => c.id !== classId);
-                students = students.filter(s => s.classId !== classId);
-                saveAllData();
-                loadClasses();
-                loadStudents();
-                loadPDFSelects();
-            }
-        }
-
-        function deleteStudent(studentId) {
-            if (confirm('آیا از حذف این دانش‌آموز مطمئن هستید؟')) {
-                students = students.filter(s => s.id !== studentId);
-                grades = grades.filter(g => g.studentId !== studentId);
-                saveAllData();
-                loadStudents();
-                loadPDFSelects();
-            }
-        }
-
-        function getGradeName(grade) {
-            const grades = {
-                '10': 'دهم',
-                '11': 'یازدهم', 
-                '12': 'دوازدهم',
-                'all': 'همه'
-            };
-            return grades[grade] || grade;
-        }
-
-        function getFieldName(field) {
-            const fields = {
-                'riazi': 'ریاضی فیزیک',
-                'tajrobi': 'علوم تجربی',
-                'ensani': 'علوم انسانی'
-            };
-            return fields[field] || field;
+        function getPersianDay(date) {
+            const day = date.getDay();
+            return days[(day + 1) % 7]; // تطبیق با شنبه شروع هفته
         }
 
         // بارگذاری اولیه
-        window.onload = function() {
-            loadStudentClassSelect();
-            console.log('سیستم آماده است...');
-        };
+        function initializeApp() {
+            loadFromLocalStorage();
+            updateDateDisplay();
+            updateSubjectsList();
+            updateExamsList();
+            updateScheduleDisplay();
+            updateStats();
+            generateWeeklyScheduleForm();
+        }
+
+        // مدیریت localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('studyPlannerData', JSON.stringify(appData));
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('studyPlannerData');
+            if (saved) {
+                appData = JSON.parse(saved);
+            }
+        }
+
+        // نمایش تاریخ
+        function updateDateDisplay() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            document.getElementById('currentDate').textContent = getPersianDate();
+            document.getElementById('todayDate').textContent = getPersianDate(now);
+            document.getElementById('todayDay').textContent = getPersianDay(now);
+            document.getElementById('tomorrowDate').textContent = getPersianDate(tomorrow);
+            document.getElementById('tomorrowDay').textContent = getPersianDay(tomorrow);
+        }
+
+        // مدیریت دروس
+        function addSubject() {
+            const subjectInput = document.getElementById('newSubject');
+            const subjectName = subjectInput.value.trim();
+            
+            if (subjectName && !appData.subjects.includes(subjectName)) {
+                appData.subjects.push(subjectName);
+                subjectInput.value = '';
+                updateSubjectsList();
+                saveToLocalStorage();
+                updateStats();
+            }
+        }
+
+        function removeSubject(subjectName) {
+            appData.subjects = appData.subjects.filter(sub => sub !== subjectName);
+            updateSubjectsList();
+            saveToLocalStorage();
+            updateStats();
+        }
+
+        function updateSubjectsList() {
+            const list = document.getElementById('subjectsList');
+            const examSelect = document.getElementById('examSubject');
+            
+            list.innerHTML = '';
+            examSelect.innerHTML = '<option value="">انتخاب درس</option>';
+            
+            appData.subjects.forEach(subject => {
+                // برای لیست نمایش
+                const listItem = document.createElement('div');
+                listItem.className = 'list-item';
+                listItem.innerHTML = `
+                    <span>${subject}</span>
+                    <button class="delete-btn" onclick="removeSubject('${subject}')">
+                        <i class="fas fa-trash"></i> حذف
+                    </button>
+                `;
+                list.appendChild(listItem);
+                
+                // برای انتخاب امتحان
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                examSelect.appendChild(option);
+            });
+        }
+
+        function handleSubjectKeyPress(event) {
+            if (event.key === 'Enter') {
+                addSubject();
+            }
+        }
+
+        // مدیریت امتحانات
+        function addExam() {
+            const subjectSelect = document.getElementById('examSubject');
+            const dateInput = document.getElementById('examDate');
+            
+            const subject = subjectSelect.value;
+            const date = dateInput.value;
+            
+            if (subject && date) {
+                appData.exams.push({
+                    subject: subject,
+                    date: date,
+                    id: Date.now()
+                });
+                
+                subjectSelect.value = '';
+                dateInput.value = '';
+                updateExamsList();
+                saveToLocalStorage();
+                updateStats();
+            }
+        }
+
+        function removeExam(examId) {
+            appData.exams = appData.exams.filter(exam => exam.id !== examId);
+            updateExamsList();
+            saveToLocalStorage();
+            updateStats();
+        }
+
+        function updateExamsList() {
+            const list = document.getElementById('examsList');
+            list.innerHTML = '';
+            
+            appData.exams.forEach(exam => {
+                const listItem = document.createElement('div');
+                listItem.className = 'list-item';
+                listItem.innerHTML = `
+                    <div>
+                        <strong>${exam.subject}</strong>
+                        <br>
+                        <small>${new Date(exam.date).toLocaleDateString('fa-IR')}</small>
+                    </div>
+                    <button class="delete-btn" onclick="removeExam(${exam.id})">
+                        <i class="fas fa-trash"></i> حذف
+                    </button>
+                `;
+                list.appendChild(listItem);
+            });
+        }
+
+        // برنامه هفتگی
+        function generateWeeklyScheduleForm() {
+            const form = document.getElementById('weeklyScheduleForm');
+            form.innerHTML = '';
+            
+            days.forEach(day => {
+                const daySection = document.createElement('div');
+                daySection.className = 'day-schedule';
+                daySection.innerHTML = `<div class="day-title">${day}</div>`;
+                
+                for (let i = 1; i <= 4; i++) {
+                    const sessionDiv = document.createElement('div');
+                    sessionDiv.className = 'input-group';
+                    sessionDiv.innerHTML = `
+                        <label for="${day}_${i}">زنگ ${i}:</label>
+                        <select id="${day}_${i}">
+                            <option value="">انتخاب درس</option>
+                            ${appData.subjects.map(sub => 
+                                `<option value="${sub}" ${appData.weeklySchedule[`${day}_${i}`] === sub ? 'selected' : ''}>${sub}</option>`
+                            ).join('')}
+                        </select>
+                    `;
+                    daySection.appendChild(sessionDiv);
+                }
+                
+                form.appendChild(daySection);
+            });
+        }
+
+        function saveWeeklySchedule() {
+            const schedule = {};
+            
+            days.forEach(day => {
+                for (let i = 1; i <= 4; i++) {
+                    const select = document.getElementById(`${day}_${i}`);
+                    if (select.value) {
+                        schedule[`${day}_${i}`] = select.value;
+                    }
+                }
+            });
+            
+            appData.weeklySchedule = schedule;
+            saveToLocalStorage();
+            updateScheduleDisplay();
+            closeModal('scheduleModal');
+            alert('برنامه هفتگی با موفقیت ذخیره شد!');
+        }
+
+        function updateScheduleDisplay() {
+            const display = document.getElementById('schoolSchedule');
+            display.innerHTML = '';
+            
+            let hasSchedule = false;
+            
+            days.forEach(day => {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day-schedule';
+                
+                let daySessions = [];
+                for (let i = 1; i <= 4; i++) {
+                    const subject = appData.weeklySchedule[`${day}_${i}`];
+                    if (subject) {
+                        daySessions.push(`زنگ ${i}: ${subject}`);
+                        hasSchedule = true;
+                    }
+                }
+                
+                if (daySessions.length > 0) {
+                    dayDiv.innerHTML = `
+                        <div class="day-title">${day}</div>
+                        ${daySessions.map(session => `<div class="session-item">${session}</div>`).join('')}
+                    `;
+                    display.appendChild(dayDiv);
+                }
+            });
+            
+            if (!hasSchedule) {
+                display.innerHTML = '<div style="text-align: center; opacity: 0.7;">برنامه‌ای تنظیم نشده است</div>';
+            }
+        }
+
+        // برنامه‌ریزی هوشمند
+        function generateSmartPlan() {
+            if (appData.subjects.length === 0) {
+                alert('لطفا اول دروس را اضافه کنید!');
+                return;
+            }
+            
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const todayDay = getPersianDay(today);
+            const tomorrowDay = getPersianDay(tomorrow);
+            
+            // برنامه امروز
+            const todayTasks = generateTodayPlan(todayDay);
+            displayTasks('todayTasks', todayTasks, 'today');
+            
+            // برنامه فردا
+            const tomorrowTasks = generateTomorrowPlan(tomorrowDay);
+            displayTasks('tomorrowTasks', tomorrowTasks, 'tomorrow');
+            
+            alert('برنامه هوشمند با موفقیت تولید شد!');
+        }
+
+        function generateTodayPlan(todayDay) {
+            const tasks = [];
+            
+            // دروس امروز مدرسه
+            const todaySubjects = [];
+            for (let i = 1; i <= 4; i++) {
+                const subject = appData.weeklySchedule[`${todayDay}_${i}`];
+                if (subject && !todaySubjects.includes(subject)) {
+                    todaySubjects.push(subject);
+                }
+            }
+            
+            if (todaySubjects.length > 0) {
+                tasks.push(`🏫 دروس امروز مدرسه: ${todaySubjects.join('، ')}`);
+                todaySubjects.forEach(subject => {
+                    // بررسی امتحانات نزدیک
+                    const urgentExam = appData.exams.find(exam => 
+                        exam.subject === subject && 
+                        isUrgentExam(exam.date)
+                    );
+                    
+                    if (urgentExam) {
+                        tasks.push(`🎯 مرور فشرده ${subject} (امتحان نزدیک)`);
+                    } else {
+                        tasks.push(`📚 مطالعه و تمرین ${subject}`);
+                    }
+                });
+            } else {
+                tasks.push('📖 مطالعه دروس عمومی');
+            }
+            
+            // امتحانات فردا
+            const tomorrowExams = appData.exams.filter(exam => isTomorrowExam(exam.date));
+            if (tomorrowExams.length > 0) {
+                const examSubjects = tomorrowExams.map(exam => exam.subject);
+                tasks.push(`⚠️ مرور فوری برای فردا: ${examSubjects.join('، ')}`);
+            }
+            
+            tasks.push('⏰ حل تمرین و مرور');
+            tasks.push('☕ استراحت بین دروس (۱۵ دقیقه)');
+            
+            return tasks;
+        }
+
+        function generateTomorrowPlan(tomorrowDay) {
+            const tasks = [];
+            
+            // پیش‌خوانی دروس فردا
+            const tomorrowSubjects = [];
+            for (let i = 1; i <= 4; i++) {
+                const subject = appData.weeklySchedule[`${tomorrowDay}_${i}`];
+                if (subject && !tomorrowSubjects.includes(subject)) {
+                    tomorrowSubjects.push(subject);
+                }
+            }
+            
+            if (tomorrowSubjects.length > 0) {
+                tasks.push(`🔍 پیش‌خوانی دروس فردا: ${tomorrowSubjects.join('، ')}`);
+                tomorrowSubjects.forEach(subject => {
+                    tasks.push(`📖 آشنایی با مبحث جدید ${subject}`);
+                });
+            }
+            
+            // پیش‌خوانی امتحانات آینده
+            const upcomingExams = appData.exams.filter(exam => isUpcomingExam(exam.date));
+            if (upcomingExams.length > 0) {
+                const examSubjects = upcomingExams.map(exam => exam.subject);
+                tasks.push(`📝 پیش‌خوانی امتحان: ${examSubjects.join('، ')}`);
+            }
+            
+            if (tasks.length === 0) {
+                tasks.push('📚 پیش‌خوانی دروس هفته آینده');
+            }
+            
+            return tasks;
+        }
+
+        function isUrgentExam(examDate) {
+            const exam = new Date(examDate);
+            const today = new Date();
+            const diffTime = exam - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 2;
+        }
+
+        function isTomorrowExam(examDate) {
+            const exam = new Date(examDate);
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            return exam.toDateString() === tomorrow.toDateString();
+        }
+
+        function isUpcomingExam(examDate) {
+            const exam = new Date(examDate);
+            const today = new Date();
+            const diffTime = exam - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays >= 3 && diffDays <= 5;
+        }
+
+        function displayTasks(containerId, tasks, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            tasks.forEach((task, index) => {
+                const taskId = `${type}_${index}`;
+                const isCompleted = appData.completedTasks.includes(taskId);
+                
+                const taskDiv = document.createElement('div');
+                taskDiv.className = 'task-item';
+                taskDiv.innerHTML = `
+                    <div class="task-checkbox ${isCompleted ? 'checked' : ''}" 
+                         onclick="toggleTask('${taskId}', this)">
+                    </div>
+                    <div class="task-text ${isCompleted ? 'completed' : ''}">
+                        ${task}
+                    </div>
+                `;
+                container.appendChild(taskDiv);
+            });
+        }
+
+        function toggleTask(taskId, checkbox) {
+            const index = appData.completedTasks.indexOf(taskId);
+            
+            if (index === -1) {
+                appData.completedTasks.push(taskId);
+                checkbox.classList.add('checked');
+                checkbox.nextElementSibling.classList.add('completed');
+            } else {
+                appData.completedTasks.splice(index, 1);
+                checkbox.classList.remove('checked');
+                checkbox.nextElementSibling.classList.remove('completed');
+            }
+            
+            saveToLocalStorage();
+            updateStats();
+        }
+
+        // تایمر
+        function startTimer() {
+            if (!appData.timerRunning) {
+                appData.timerRunning = true;
+                appData.timerInterval = setInterval(updateTimer, 1000);
+                updateTimerCircle();
+            }
+        }
+
+        function stopTimer() {
+            if (appData.timerRunning) {
+                appData.timerRunning = false;
+                clearInterval(appData.timerInterval);
+                // محاسبه زمان مطالعه
+                const totalMinutes = parseInt(document.getElementById('timerMinutes').value);
+                const studiedSeconds = (totalMinutes * 60) - appData.timerSeconds;
+                appData.studyTime += Math.floor(studiedSeconds / 60);
+                updateStats();
+            }
+        }
+
+        function resetTimer() {
+            stopTimer();
+            setTimer();
+        }
+
+        function setTimer() {
+            const minutes = parseInt(document.getElementById('timerMinutes').value);
+            appData.timerSeconds = minutes * 60;
+            updateTimerDisplay();
+            updateTimerCircle();
+        }
+
+        function updateTimer() {
+            if (appData.timerSeconds > 0) {
+                appData.timerSeconds--;
+                updateTimerDisplay();
+                updateTimerCircle();
+            } else {
+                stopTimer();
+                alert('⏰ زمان مطالعه به پایان رسید! استراحت کنید.');
+                // اضافه کردن زمان مطالعه
+                const totalMinutes = parseInt(document.getElementById('timerMinutes').value);
+                appData.studyTime += totalMinutes;
+                updateStats();
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(appData.timerSeconds / 60);
+            const seconds = appData.timerSeconds % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimerCircle() {
+            const totalMinutes = parseInt(document.getElementById('timerMinutes').value);
+            const totalSeconds = totalMinutes * 60;
+            const progress = 1 - (appData.timerSeconds / totalSeconds);
+            const degrees = progress * 360;
+            
+            const circle = document.getElementById('timerCircle');
+            circle.style.background = `conic-gradient(#ffd32a ${degrees}deg, #34495e ${degrees}deg)`;
+        }
+
+        // آمار
+        function updateStats() {
+            document.getElementById('subjectsCount').textContent = appData.subjects.length;
+            document.getElementById('examsCount').textContent = appData.exams.length;
+            document.getElementById('studyTime').textContent = appData.studyTime;
+            document.getElementById('completedTasks').textContent = appData.completedTasks.length;
+        }
+
+        // مدیریت مودال
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // بستن مودال با کلیک خارج
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // راه‌اندازی برنامه
+        document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
 </html>
